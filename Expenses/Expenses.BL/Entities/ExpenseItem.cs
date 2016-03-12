@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Expenses.BL
+namespace Expenses.BL.Entities
 {
     public class ExpenseItem
     {

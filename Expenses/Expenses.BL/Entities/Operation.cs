@@ -15,6 +15,8 @@ namespace Expenses.BL.Entities
         public double Amount { get; set; }
 
         public int ExpenseItemId { get; set; }
+
+        public string Comment { get; set; }
     }
 }
 
