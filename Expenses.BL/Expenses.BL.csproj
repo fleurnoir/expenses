@@ -46,6 +46,8 @@
     <Compile Include="Service\ExpensesService.cs" />
     <Compile Include="Service\IDataContextProvider.cs" />
     <Compile Include="Entities\IUnique.cs" />
+    <Compile Include="Entities\Account.cs" />
+    <Compile Include="Entities\Currency.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
