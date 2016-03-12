@@ -32,9 +32,6 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework.SqlServer">
-      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
@@ -48,6 +45,7 @@
     <Compile Include="Service\IExpensesService.cs" />
     <Compile Include="Service\ExpensesService.cs" />
     <Compile Include="Service\IDataContextProvider.cs" />
+    <Compile Include="Entities\IUnique.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

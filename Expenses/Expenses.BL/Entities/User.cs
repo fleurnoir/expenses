@@ -2,7 +2,7 @@
 
 namespace Expenses.BL.Entities
 {
-    public class User
+    public class User : IUnique
     {
         public int Id { get; set; }
 
