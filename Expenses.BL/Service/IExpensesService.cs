@@ -19,6 +19,16 @@ namespace Expenses.BL.Service
         ExpenseCategory UpdateCategory(ExpenseCategory category);
         void DeleteCategory(int categoryId);
         ExpenseCategory GetCategory(int categoryId);
+
+        Currency AddCurrency(Currency currency);
+        Currency UpdateCurrency(Currency currency);
+        void DeleteCurrency(int currencyId);
+        Currency GetCurrency(int currencyId);
+
+        Account AddAccount(Account account);
+        Account UpdateAccount(Account account);
+        void DeleteAccount(int accountId);
+        Account GetAccount(int accountId);
     }
 }
 

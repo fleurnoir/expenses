@@ -72,27 +72,28 @@ namespace Expenses.BL.Service
         }
 
         public void DeleteOperation (int operationId) => Delete<Operation>(operationId);
-
         public Operation GetOperation (int operationId) => Select<Operation>(operationId);
 
 
         public ExpenseItem AddExpense (ExpenseItem expense) => Add(expense);
-
         public ExpenseItem UpdateExpense (ExpenseItem expense) => Update(expense);
-
         public void DeleteExpense (int expenseId) => Delete<ExpenseItem>(expenseId);
-
         public ExpenseItem GetExpense (int expenseId) => Select<ExpenseItem>(expenseId);
 
-
         public ExpenseCategory AddCategory (ExpenseCategory category) => Add(category);
-
         public ExpenseCategory UpdateCategory (ExpenseCategory category) => Update(category);
-
         public void DeleteCategory (int categoryId) => Delete<ExpenseCategory>(categoryId);
-
         public ExpenseCategory GetCategory (int categoryId) => Select<ExpenseCategory>(categoryId);
 
+        public Currency AddCurrency(Currency currency) => Add(currency);
+        public Currency UpdateCurrency(Currency currency) => Update(currency);
+        public void DeleteCurrency(int currencyId) => Delete<Currency>(currencyId);
+        public Currency GetCurrency(int currencyId) => Select<Currency>(currencyId);
+
+        public Account AddAccount(Account account) => Add(account);
+        public Account UpdateAccount(Account account) => Update(account);
+        public void DeleteAccount(int accountId) => Delete<Account>(accountId);
+        public Account GetAccount(int accountId) => Select<Account>(accountId);
     }
 }
 

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Expenses.BL
+namespace Expenses.BL.Entities
 {
-    public class Currency
+    public class Currency : IUnique
     {
         public int Id { get; set; }
 
