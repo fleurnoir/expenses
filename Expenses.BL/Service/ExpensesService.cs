@@ -10,7 +10,7 @@ namespace Expenses.BL.Service
         private IDataContextProvider m_provider;
         private User m_user;
 
-        private DataContext CreateContext() => m_provider.CreateContext();
+        private ExpensesContext CreateContext() => m_provider.CreateContext();
 
         public ExpensesService (IDataContextProvider contextProvider, User user)
         {

@@ -5,7 +5,7 @@ namespace Expenses.BL.Service
 {
     public interface IDataContextProvider
     {
-        DataContext CreateContext();
+        ExpensesContext CreateContext();
     }
 }
 

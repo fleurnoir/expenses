@@ -4,9 +4,9 @@ namespace Expenses.BL.Entities
 {
     public class ExpenseItem : IUnique
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
-        public int ExpenseCategoryId { get; set; }
+        public long ExpenseCategoryId { get; set; }
 
         public string Name { get; set; }
 

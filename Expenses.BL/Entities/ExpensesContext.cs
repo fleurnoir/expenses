@@ -3,9 +3,11 @@ using System.Data.Entity;
 
 namespace Expenses.BL.Entities
 {
-    public class DataContext : DbContext
+    public class ExpensesContext : DbContext
     {
-        public DataContext(string nameOrConnectionString) : base(nameOrConnectionString) {}
+        public ExpensesContext() : base(){}
+
+        public ExpensesContext(string nameOrConnectionString) : base(nameOrConnectionString) {}
 
         public DbSet<ExpenseItem> ExpenseItems { get; set; }
         public DbSet<User> Users { get; set; }

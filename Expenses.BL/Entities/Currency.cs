@@ -4,7 +4,7 @@ namespace Expenses.BL.Entities
 {
     public class Currency : IUnique
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         public string ShortName { get; set; }
 
