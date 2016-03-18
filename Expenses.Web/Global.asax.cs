@@ -7,10 +7,13 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity.Infrastructure.Interception;
 using Expenses.Web;
+using Expenses.Web.DAL;
+using Expenses.BL.Service;
+using Expenses.Common.Utils;
 
-namespace ContosoUniversity
+namespace Expenses.Web
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -18,6 +21,12 @@ namespace ContosoUniversity
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
+            var contextProvider = DataContextProvider.FromConnectionStringName("expenses");
+            var authentication = new BasicAuthentication (new AuthenticationService (contextProvider));
+            Services.Register<IMvcActionFilter> (authentication);
+            Services.Register<IAuthentication> (authentication);
+            Services.RegisterFactory<IExpensesService>(new ExpensesServiceFactory(contextProvider, authentication));
         }
     }
 }

@@ -48,6 +48,12 @@
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\ExpensesContext.cs" />
+    <Compile Include="Service\IAuthenticationService.cs" />
+    <Compile Include="Service\AuthenticationService.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Service\ICurrentUserProvider.cs" />
+    <Compile Include="Service\DataContextProvider.cs" />
+    <Compile Include="Service\ExpensesServiceFactory.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -57,5 +63,11 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Expenses.Common\Expenses.Common.csproj">
+      <Project>{CBBB0C69-AB34-4286-973B-600A89318A23}</Project>
+      <Name>Expenses.Common</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

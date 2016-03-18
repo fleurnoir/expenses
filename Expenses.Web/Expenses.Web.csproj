@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Expenses.Web</RootNamespace>
-    <AssemblyName>ContosoUniversity</AssemblyName>
+    <AssemblyName>Expenses.Web</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
@@ -17,7 +17,6 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
-    <ApplicationInsightsResourceId>/subscriptions/aeb4ae60-b7cb-4f3d-966d-fa43b6607f30/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/ContosoUniversity</ApplicationInsightsResourceId>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -124,8 +123,12 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
-    <Compile Include="DAL\ContextProvider.cs" />
-    <Compile Include="DAL\WebExpensesService.cs" />
+    <Compile Include="DAL\BasicAuthentication.cs" />
+    <Compile Include="DAL\IMvcActionFilter.cs" />
+    <Compile Include="DAL\CustomActionFilterAttribute.cs" />
+    <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DAL\IAuthentication.cs" />
+    <Compile Include="Models\LoginData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -169,12 +172,14 @@
     <Content Include="Views\Currency\Details.cshtml" />
     <Content Include="Views\Currency\Edit.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
+    <Content Include="Views\User\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="DAL\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
+    <Folder Include="Views\User\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -225,6 +230,10 @@
     <ProjectReference Include="..\Expenses.BL\Expenses.BL.csproj">
       <Project>{51A74DCC-AD92-463F-940D-59A7D02689C0}</Project>
       <Name>Expenses.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Expenses.Common\Expenses.Common.csproj">
+      <Project>{CBBB0C69-AB34-4286-973B-600A89318A23}</Project>
+      <Name>Expenses.Common</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

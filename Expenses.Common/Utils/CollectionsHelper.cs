@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Expenses.Common
+namespace Expenses.Common.Utils
 {
     public static class CollectionsHelper
     {

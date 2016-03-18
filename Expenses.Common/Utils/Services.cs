@@ -1,15 +1,61 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Collections.Concurrent;
 
 namespace Expenses.Common.Utils
 {
     public class Services
     {
-        private static ConcurrentDictionary<Type,object> m_services = new ConcurrentDictionary<Type,object>();
+        private static IDictionary<Type,object> m_dictionary;
 
-        public static TService Get<TService>()
+        private static IDictionary<Type,object> Dictionary
         {
-            m_services.SafeGet(typeof(TService))
+            get 
+            {
+                if (m_dictionary != null)
+                    return m_dictionary;
+                Interlocked.CompareExchange (ref m_dictionary, new ConcurrentDictionary<Type,object> (), null);
+                return m_dictionary;
+            }
+        }
+
+        public static void Initialize(bool threadSafe)
+        {
+            var oldValue = m_dictionary != null ? m_dictionary : 
+                Interlocked.CompareExchange (ref m_dictionary, threadSafe ? 
+                    (IDictionary<Type,object>) new ConcurrentDictionary<Type,object> () : 
+                    new Dictionary<Type,object> (), null);
+            if (oldValue != null)
+                throw new InvalidOperationException ("Services are already initialized");
+        }
+
+        public static bool IsInitialized => m_dictionary != null;
+
+        public static bool IsThreadSafe => Dictionary is ConcurrentDictionary<Type, object>;
+
+        public static TService TryGet<TService>() where TService : class
+        {
+            var result = Dictionary.SafeGet(typeof(TService));
+            return result as TService ?? (result as IServiceFactory<TService>)?.CreateService();
+        }
+
+        public static TService Get<TService>() where TService : class
+        {
+            var result = TryGet<TService>();
+            if(result == null)
+                throw new ArgumentException($"Sevice of type {typeof(TService)} is not registered");
+            return result;
+        }
+
+        public static void Register<TService>(TService service)
+        {
+            Dictionary.Add(typeof(TService), service);
+        }
+
+        public static void RegisterFactory<TService>(IServiceFactory<TService> factory)
+        {
+            Dictionary.Add(typeof(TService), factory);
         }
     }
 }

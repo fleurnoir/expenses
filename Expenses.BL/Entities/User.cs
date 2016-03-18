@@ -2,10 +2,8 @@
 
 namespace Expenses.BL.Entities
 {
-    public class User : IUnique
+    public class User : Entity
     {
-        public long Id { get; set; }
-
         public string Login { get; set; }
 
         public string FirstName { get; set; }
@@ -16,7 +14,13 @@ namespace Expenses.BL.Entities
 
         public string PasswordHash { get; set; }
 
-        public string Comment { get; set; }
+        public override void CheckFields ()
+        {
+            if (String.IsNullOrEmpty (Login))
+                throw new ArgumentException ($"The field {nameof(Login)} cannot be empty");
+            if (String.IsNullOrEmpty (PasswordHash))
+                throw new ArgumentException ($"The field {nameof(PasswordHash)} cannot be empty");
+        }
     }
 }
 

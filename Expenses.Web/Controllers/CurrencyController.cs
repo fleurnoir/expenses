@@ -9,27 +9,33 @@ using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 using Expenses.BL.Entities;
 using Expenses.BL.Service;
+using Expenses.Web.DAL;
+using Expenses.Common.Utils;
 
 namespace Expenses.Web.Controllers
 {
+    [CustomActionFilter]
     public class CurrencyController : Controller
     {
-        private IExpensesService m_service = new ExpensesService("name=Expenses");
+        private IExpensesService m_service;
+
+        private IExpensesService Service => m_service ?? (m_service = Services.Get<IExpensesService>());
+
 
         // GET: Course
         public ActionResult Index()
         {
-            return View(m_service.Currencies.ToList());
+            return View(Service.GetCurrencies());
         }
 
         // GET: Course/Details/5
-        public ActionResult Details(int? id)
+        public ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var currency = m_service.Currencies.Find(id);
+            var currency = Service.GetCurrency((long)id);
             if (currency == null)
             {
                 return HttpNotFound();
@@ -50,11 +56,7 @@ namespace Expenses.Web.Controllers
             try
             {
                 if (ModelState.IsValid)
-                {
-                    m_service.Currencies.Add(currency);
-                    m_service.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                    Service.AddCurrency (currency);
             }
             catch (RetryLimitExceededException /* dex */)
             {
@@ -64,13 +66,13 @@ namespace Expenses.Web.Controllers
             return View(currency);
         }
 
-        public ActionResult Edit(int? id)
+        public ActionResult Edit(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var currency = m_service.Currencies.Find(id);
+            var currency = Service.GetCurrency((long)id);
             if (currency == null)
             {
                 return HttpNotFound();
@@ -80,19 +82,19 @@ namespace Expenses.Web.Controllers
 
         [HttpPost, ActionName("Edit")]
         [ValidateAntiForgeryToken]
-        public ActionResult EditPost(int? id)
+        public ActionResult EditPost(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var currencyToUpdate = m_service.Currencies.Find(id);
+            var currencyToUpdate = new Currency() {Id = (long)id};
             if (TryUpdateModel(currencyToUpdate, "",
                new string[] { "ShortName", "Name", "Comment" }))
             {
                 try
                 {
-                    m_service.SaveChanges();
+                    Service.UpdateCurrency(currencyToUpdate);
                     return RedirectToAction("Index");
                 }
                 catch (RetryLimitExceededException /* dex */)
@@ -104,13 +106,13 @@ namespace Expenses.Web.Controllers
         }
 
         // GET: Course/Delete/5
-        public ActionResult Delete(int? id)
+        public ActionResult Delete(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var currency = m_service.Currencies.Find(id);
+            var currency = Service.GetCurrency((long)id);
             if (currency == null)
             {
                 return HttpNotFound();
@@ -121,17 +123,15 @@ namespace Expenses.Web.Controllers
         // POST: Course/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public ActionResult DeleteConfirmed(long id)
         {
-            var currency = m_service.Currencies.Find(id);
-            m_service.Currencies.Remove(currency);
-            m_service.SaveChanges();
+            Service.DeleteCurrency(id);
             return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing)
+            if (disposing && m_service != null)
                 m_service.Dispose();
             base.Dispose(disposing);
         }
