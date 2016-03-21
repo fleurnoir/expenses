@@ -34,10 +34,28 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utils\Services.cs" />
     <Compile Include="Utils\CollectionsHelper.cs" />
-    <Compile Include="Utils\IServiceFactory.cs" />
+    <Compile Include="Utils\Cloner.cs" />
+    <Compile Include="Utils\TypeHelper.cs" />
+    <Compile Include="Entities\Account.cs" />
+    <Compile Include="Entities\Currency.cs" />
+    <Compile Include="Entities\Entity.cs" />
+    <Compile Include="Entities\ExpenseCategory.cs" />
+    <Compile Include="Entities\ExpenseCategoryType.cs" />
+    <Compile Include="Entities\ExpenseItem.cs" />
+    <Compile Include="Entities\IUnique.cs" />
+    <Compile Include="Entities\Operation.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Service\IEntityService.cs" />
+    <Compile Include="Service\IExpensesService.cs" />
+    <Compile Include="Service\IAuthenticationService.cs" />
+    <Compile Include="Utils\IServiceProvider.cs" />
+    <Compile Include="Service\CachedEntityService.cs" />
+    <Compile Include="Service\ExpensesServiceHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Utils\" />
+    <Folder Include="Service\" />
+    <Folder Include="Entities\" />
   </ItemGroup>
 </Project>

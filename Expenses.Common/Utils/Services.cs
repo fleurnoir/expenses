@@ -37,7 +37,7 @@ namespace Expenses.Common.Utils
         public static TService TryGet<TService>() where TService : class
         {
             var result = Dictionary.SafeGet(typeof(TService));
-            return result as TService ?? (result as IServiceFactory<TService>)?.CreateService();
+            return result as TService ?? (result as IServiceProvider<TService>)?.GetService();
         }
 
         public static TService Get<TService>() where TService : class
@@ -53,9 +53,9 @@ namespace Expenses.Common.Utils
             Dictionary.Add(typeof(TService), service);
         }
 
-        public static void RegisterFactory<TService>(IServiceFactory<TService> factory)
+        public static void RegisterProvider<TService>(IServiceProvider<TService> provider)
         {
-            Dictionary.Add(typeof(TService), factory);
+            Dictionary.Add(typeof(TService), provider);
         }
     }
 }

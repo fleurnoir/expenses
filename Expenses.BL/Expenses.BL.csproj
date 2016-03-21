@@ -33,32 +33,25 @@
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Operation.cs" />
-    <Compile Include="Entities\User.cs" />
-    <Compile Include="Entities\ExpenseItem.cs" />
-    <Compile Include="Entities\ExpenseCategory.cs" />
-    <Compile Include="Entities\ExpenseCategoryType.cs" />
-    <Compile Include="Service\IExpensesService.cs" />
     <Compile Include="Service\ExpensesService.cs" />
     <Compile Include="Service\IDataContextProvider.cs" />
-    <Compile Include="Entities\IUnique.cs" />
-    <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\ExpensesContext.cs" />
-    <Compile Include="Service\IAuthenticationService.cs" />
     <Compile Include="Service\AuthenticationService.cs" />
-    <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Service\ICurrentUserProvider.cs" />
     <Compile Include="Service\DataContextProvider.cs" />
-    <Compile Include="Service\ExpensesServiceFactory.cs" />
+    <Compile Include="Service\EntityService.cs" />
+    <Compile Include="Service\OperationsService.cs" />
+    <Compile Include="Common\DbContextHelper.cs" />
+    <Compile Include="Common\DbContextTransactionScope.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
     <Folder Include="Entities\" />
     <Folder Include="Service\" />
+    <Folder Include="Common\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

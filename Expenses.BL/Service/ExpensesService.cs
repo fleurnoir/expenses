@@ -3,11 +3,27 @@ using Expenses.BL.Entities;
 using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
+using Expenses.Common.Utils;
 
 namespace Expenses.BL.Service
 {
     public class ExpensesService : IExpensesService
     {
+        private static Dictionary<Type, Delegate> m_factories = new Dictionary<Type, Delegate> ();
+        private static void RegisterFactory<TEntity>(Func<IDataContextProvider, long, IEntityService<TEntity>> factory) where TEntity : Entity, new()
+            => m_factories.Add (typeof(TEntity), factory);
+        private static void RegisterFactory<TEntity>() where TEntity : Entity, new()
+            => RegisterFactory((provider, userId)=>new EntityService<TEntity>(provider));
+
+        static ExpensesService()
+        {
+            RegisterFactory<Currency> ();
+            RegisterFactory<Account> ();
+            RegisterFactory<ExpenseItem> ();
+            RegisterFactory<ExpenseCategory> ();
+            RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));
+        }
+
         private IDataContextProvider m_provider;
         private long m_userId;
 
@@ -23,68 +39,38 @@ namespace Expenses.BL.Service
             m_userId = userId;
         }
 
-        private TEntity Add<TEntity>(TEntity item) where TEntity : Entity
+        public IEntityService<TEntity> GetEntityService<TEntity> () where TEntity : Entity, new()
         {
-            if (item == null)
-                throw new ArgumentNullException (nameof(item));
-            item.CheckFields ();
-            using (var context = CreateContext ()) 
-            {
-                context.Set<TEntity> ().Add (item);
-                context.SaveChanges ();
-                return item;
-            }
+            var factory = m_factories.SafeGet(typeof(TEntity)) as Func<IDataContextProvider, long, IEntityService<TEntity>>;
+            if (factory == null)
+                throw new InvalidOperationException ($"Service is not available for type '{typeof(TEntity).Name}'");
+            return factory (m_provider, m_userId);
         }
 
-        private TEntity Update<TEntity>(TEntity item) where TEntity : Entity
-        {
-            if (item == null)
-                throw new ArgumentNullException (nameof(item));
-            item.CheckFields ();
-            using (var context = CreateContext ()) 
-            {
-                context.Entry (item).State = EntityState.Modified;
-                context.SaveChanges ();
-                return item;
-            }
-        }
+        private TEntity Add<TEntity> (TEntity item) where TEntity : Entity, new()
+            => GetEntityService<TEntity>().Add(item);
 
-        private void Delete<TEntity>(long itemId) where TEntity : class, IUnique, new()
-        {
-            using (var context = CreateContext ()) 
-            {
-                context.Set<TEntity>().Remove(new TEntity {Id=itemId});
-                context.SaveChanges ();
-            }
-        }
+        private TEntity Update<TEntity>(TEntity item) where TEntity : Entity, new()
+           => GetEntityService<TEntity>().Update(item);
 
-        private TEntity Select<TEntity>(long id) where TEntity : class, IUnique
-        {
-            using (var context = CreateContext ())
-                return context.Set<TEntity> ().FirstOrDefault (item=>item.Id == id);
-        }
+        private void Delete<TEntity>(long itemId) where TEntity : Entity, new()
+            => GetEntityService<TEntity>().Delete(itemId);
 
-        public Operation AddOperation(Operation operation)
-        {
-            operation.UserId = m_userId;
-            operation.OperationTime = DateTime.Now;
-            return Add (operation);
-        }
+        private TEntity Select<TEntity>(long itemId) where TEntity : Entity, new()
+            => GetEntityService<TEntity>().Select(itemId);
 
-        public Operation UpdateOperation(Operation operation)
-        {
-            operation.UserId = m_userId;
-            operation.OperationTime = DateTime.Now;
-            return Update (operation);
-        }
+        private IList<TEntity> Select<TEntity>() where TEntity : Entity, new()
+            => GetEntityService<TEntity>().Select();
 
+        public Operation AddOperation (Operation operation) => Add(operation);
+        public Operation UpdateOperation (Operation operation) => Update(operation);
         public void DeleteOperation (long operationId) => Delete<Operation>(operationId);
         public Operation GetOperation (long operationId) => Select<Operation>(operationId);
 
-        public ExpenseItem AddExpense (ExpenseItem expense) => Add(expense);
-        public ExpenseItem UpdateExpense (ExpenseItem expense) => Update(expense);
-        public void DeleteExpense (long expenseId) => Delete<ExpenseItem>(expenseId);
-        public ExpenseItem GetExpense (long expenseId) => Select<ExpenseItem>(expenseId);
+        public ExpenseItem AddExpenseItem (ExpenseItem expense) => Add(expense);
+        public ExpenseItem UpdateExpenseItem (ExpenseItem expense) => Update(expense);
+        public void DeleteExpenseItem (long expenseId) => Delete<ExpenseItem>(expenseId);
+        public ExpenseItem GetExpenseItem (long expenseId) => Select<ExpenseItem>(expenseId);
 
         public ExpenseCategory AddCategory (ExpenseCategory category) => Add(category);
         public ExpenseCategory UpdateCategory (ExpenseCategory category) => Update(category);
@@ -101,10 +87,9 @@ namespace Expenses.BL.Service
         public void DeleteAccount(long accountId) => Delete<Account>(accountId);
         public Account GetAccount(long accountId) => Select<Account>(accountId);
 
-        public IList<Operation> GetOperations ()
+        public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? expenseItemId, long? expenseCategoryId)
         {
-            using (var context = m_provider.CreateContext ())
-                return context.Operations.ToList ();
+            throw new NotImplementedException ();
         }
 
         public IList<ExpenseItem> GetExpenseItems (long? categoryId = null)
@@ -127,17 +112,8 @@ namespace Expenses.BL.Service
             }
         }
 
-        public IList<Currency> GetCurrencies ()
-        {
-            using (var context = m_provider.CreateContext ())
-                return context.Currencies.ToList ();
-        }
-
-        public IList<Account> GetAccounts ()
-        {
-            using (var context = m_provider.CreateContext ())
-                return context.Accounts.ToList ();
-        }
+        public IList<Currency> GetCurrencies () => Select<Currency>();
+        public IList<Account> GetAccounts () => Select<Account>();
 
         void IDisposable.Dispose ()
         {

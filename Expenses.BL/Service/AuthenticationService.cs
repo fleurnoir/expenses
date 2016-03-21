@@ -21,14 +21,14 @@ namespace Expenses.BL.Service
         private string ComputeHash (string password) => Convert.ToBase64String (new SHA512CryptoServiceProvider ()
             .ComputeHash (Encoding.UTF8.GetBytes (password ?? String.Empty)));
 
-        public User GetUser (string login, string password)
+        public IExpensesService Login (string login, string password)
         {
             using (var context = m_contextProvider.CreateContext ()) 
             {
                 var user = context.Users.FirstOrDefault(u => u.Login == login);
                 if (user != null && ComputeHash (password) != user.PasswordHash)
-                    user = null;
-                return user;
+                    return null;
+                return new ExpensesService(m_contextProvider, user.Id);
             }
         }
 

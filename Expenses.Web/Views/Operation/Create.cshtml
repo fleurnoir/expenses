@@ -1,0 +1,192 @@
+﻿@model Expenses.Web.Models.OperationViewData
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<div id="add-category-dialog" style="display:none;" title="Add Category">
+    <label class="control-label">Name</label>
+    <input type="text" class="form-control" id="add-category-name"/>
+</div>
+
+<div id="add-item-dialog" style="display:none;" title="Add Expense Item">
+    <label class="control-label">Name</label>
+    <input type="text" class="form-control" id="add-item-name"/>
+</div>
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Operation</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ExpenseCategoryId">Category</label>
+            <div class="col-md-10">
+                @Html.DropDownList("ExpenseCategoryId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
+                <button type="button" class="btn btn-default" id="add-category" tabIndex="-1">+</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="ExpenseItemId">Item</label>
+            <div class="col-md-10">
+                @Html.DropDownList("ExpenseItemId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
+                <button type="button" class="btn btn-default" id="add-item" tabIndex="-1">+</button>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="AccountId">Account</label>
+            <div class="col-md-10">
+                @Html.DropDownList("AccountId", null, htmlAttributes: new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control", style = "display:inline;" } })
+                <span id="CurrencyName">@ViewBag.CurrencyName</span><br/>
+                @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Comment, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Styles {
+    @Styles.Render("~/Content/jquery-ui")
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jquery-ui")
+
+<script type="text/javascript">
+
+        $(function () {
+            var errorFun = function(jqXHR, textStatus, errorThrown) {
+                console.log(textStatus, errorThrown);
+            };
+
+            $("#ExpenseCategoryId").change(function(e) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Operation/GetExpenseItems",
+                    data: "{ categoryId: " + $(e.target).val() + " }",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data, status) {     
+                        var $el = $("#ExpenseItemId");
+                        $el.empty(); // remove old options
+                        var len = data.length;
+                        for(var i=0; i < len; i++) {
+                            $el.append($("<option></option>")
+                                .attr("value", data[i].id).text(data[i].name));
+                        }                    
+                    },
+                    error: errorFun 
+                });
+            });
+
+            $("#AccountId").change(function(e) {
+                $.ajax({
+                    type: "POST",
+                    url: "/Operation/GetCurrencyName",
+                    data: "{ accountId: " + $(e.target).val() + " }",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function(data, status) {     
+                        $("#CurrencyName").empty().text(data.currencyName);
+                    },
+                    error: errorFun
+                });
+            });
+
+            $( "#add-category-dialog" ).dialog({
+                autoOpen: false,
+                modal: true,  
+                buttons: {
+                    OK: function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Operation/AddCategory",
+                            data: "{ categoryName: '" + $("#add-category-name").val() + "' }",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data, status) {     
+                                var $el = $("#ExpenseCategoryId");
+                                $el.append($("<option></option>")
+                                    .attr("value", data.id).text(data.name));
+                                $el.val(data.id);
+                                $("#ExpenseItemId").empty();                    
+                                $("#add-category-dialog").dialog("close");
+                            },
+                            error: errorFun
+                        });
+
+                    },
+                    Cancel: function() {$(this).dialog("close");}
+                }            
+            });
+
+            $( "#add-item-dialog" ).dialog({
+                autoOpen: false,
+                modal: true,  
+                buttons: {
+                    OK: function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Operation/AddExpenseItem",
+                            data: "{ itemName: '" + $("#add-item-name").val() + "', categoryId: " + $("#ExpenseCategoryId").val() + " }",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data, status) {     
+                                var $el = $("#ExpenseItemId");
+                                $el.append($("<option></option>")
+                                    .attr("value", data.id).text(data.name));
+                                $el.val(data.id);
+                                $("#add-item-dialog").dialog("close");
+                            },
+                            error: errorFun
+                        });
+                    },
+                    Cancel: function() {$(this).dialog("close");}
+                }            
+            });
+
+            $( "#add-category" ).click(function() {
+               $( "#add-category-dialog" ).dialog( "open" );
+            });
+
+            $( "#add-item" ).click(function() {
+               $( "#add-item-dialog" ).dialog( "open" );
+            });
+
+        });
+</script>
+
+}
+

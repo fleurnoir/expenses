@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 using System.Text;
-using Expenses.Web.DAL;
+using Expenses.Web.Common;
 using Expenses.Common.Utils;
 using Expenses.Web.Models;
 using System.Net;

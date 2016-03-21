@@ -7,7 +7,7 @@ using System.Web.Optimization;
 using System.Web.Routing;
 using System.Data.Entity.Infrastructure.Interception;
 using Expenses.Web;
-using Expenses.Web.DAL;
+using Expenses.Web.Common;
 using Expenses.BL.Service;
 using Expenses.Common.Utils;
 
@@ -26,7 +26,7 @@ namespace Expenses.Web
             var authentication = new BasicAuthentication (new AuthenticationService (contextProvider));
             Services.Register<IMvcActionFilter> (authentication);
             Services.Register<IAuthentication> (authentication);
-            Services.RegisterFactory<IExpensesService>(new ExpensesServiceFactory(contextProvider, authentication));
+            Services.RegisterProvider<IExpensesService>(authentication);
         }
     }
 }

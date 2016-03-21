@@ -117,18 +117,28 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controllers\CurrencyController.cs" />
-    <Compile Include="DAL\BasicAuthentication.cs" />
-    <Compile Include="DAL\IMvcActionFilter.cs" />
-    <Compile Include="DAL\CustomActionFilterAttribute.cs" />
     <Compile Include="Controllers\UserController.cs" />
-    <Compile Include="DAL\IAuthentication.cs" />
     <Compile Include="Models\LoginData.cs" />
+    <Compile Include="Common\BasicAuthentication.cs" />
+    <Compile Include="Common\IMvcActionFilter.cs" />
+    <Compile Include="Common\CustomActionFilterAttribute.cs" />
+    <Compile Include="Common\IAuthentication.cs" />
+    <Compile Include="Common\ExpensesController.cs" />
+    <Compile Include="Models\AccountViewData.cs" />
+    <Compile Include="Models\ExpenseViewData.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ExpenseCategoryController.cs" />
+    <Compile Include="Models\ExpenseCategoryViewData.cs" />
+    <Compile Include="Controllers\ExpenseItemController.cs" />
+    <Compile Include="Models\ExpenseItemViewData.cs" />
+    <Compile Include="Models\OperationViewData.cs" />
+    <Compile Include="Common\EntityViewService.cs" />
+    <Compile Include="Controllers\OperationController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -163,9 +173,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
-    <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Currency\Create.cshtml" />
     <Content Include="Views\Currency\Delete.cshtml" />
@@ -173,13 +180,53 @@
     <Content Include="Views\Currency\Edit.cshtml" />
     <Content Include="Views\Currency\Index.cshtml" />
     <Content Include="Views\User\Login.cshtml" />
+    <Content Include="Views\Account\Create.cshtml" />
+    <Content Include="Views\Account\Delete.cshtml" />
+    <Content Include="Views\Account\Details.cshtml" />
+    <Content Include="Views\Account\Edit.cshtml" />
+    <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\ExpenseCategory\Create.cshtml" />
+    <Content Include="Views\ExpenseCategory\Delete.cshtml" />
+    <Content Include="Views\ExpenseCategory\Details.cshtml" />
+    <Content Include="Views\ExpenseCategory\Edit.cshtml" />
+    <Content Include="Views\ExpenseCategory\Index.cshtml" />
+    <Content Include="Views\ExpenseItem\Create.cshtml" />
+    <Content Include="Views\ExpenseItem\Delete.cshtml" />
+    <Content Include="Views\ExpenseItem\Details.cshtml" />
+    <Content Include="Views\ExpenseItem\Edit.cshtml" />
+    <Content Include="Views\ExpenseItem\Index.cshtml" />
+    <Content Include="Views\Operation\Create.cshtml" />
+    <Content Include="Views\Operation\Delete.cshtml" />
+    <Content Include="Views\Operation\Details.cshtml" />
+    <Content Include="Views\Operation\Edit.cshtml" />
+    <Content Include="Views\Operation\Index.cshtml" />
+    <Content Include="Content\jquery-ui.css" />
+    <Content Include="Scripts\jquery-ui.js" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_18_b81900_40x40.png" />
+    <Content Include="Content\images\ui-bg_diagonals-thick_20_666666_40x40.png" />
+    <Content Include="Content\images\ui-bg_flat_10_000000_40x100.png" />
+    <Content Include="Content\images\ui-bg_glass_65_ffffff_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_f6f6f6_1x400.png" />
+    <Content Include="Content\images\ui-bg_glass_100_fdf5ce_1x400.png" />
+    <Content Include="Content\images\ui-bg_gloss-wave_35_f6a828_500x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_75_ffe45c_1x100.png" />
+    <Content Include="Content\images\ui-bg_highlight-soft_100_eeeeee_1x100.png" />
+    <Content Include="Content\images\ui-icons_228ef1_256x240.png" />
+    <Content Include="Content\images\ui-icons_222222_256x240.png" />
+    <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
+    <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="DAL\" />
     <Folder Include="Models\" />
     <Folder Include="ViewModels\" />
     <Folder Include="Views\User\" />
+    <Folder Include="Common\" />
+    <Folder Include="Views\Account\" />
+    <Folder Include="Views\ExpenseCategory\" />
+    <Folder Include="Views\ExpenseItem\" />
+    <Folder Include="Views\Operation\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
