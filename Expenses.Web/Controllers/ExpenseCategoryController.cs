@@ -12,8 +12,8 @@ namespace Expenses.Web.Controllers
     {
         private static IDictionary<ExpenseCategoryType, string> m_categoryNames = new Dictionary<ExpenseCategoryType, string>
         {
-            {ExpenseCategoryType.Expense, "Expense"},
-            {ExpenseCategoryType.Income, "Income"}
+            {ExpenseCategoryType.Expense, Strings.Expense},
+            {ExpenseCategoryType.Income, Strings.Income}
         };
 
         protected override IEnumerable<ExpenseCategoryViewData> FillUpViewItems (IEnumerable<ExpenseCategoryViewData> items)

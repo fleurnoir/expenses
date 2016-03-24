@@ -139,6 +139,9 @@
     <Compile Include="Models\OperationViewData.cs" />
     <Compile Include="Common\EntityViewService.cs" />
     <Compile Include="Controllers\OperationController.cs" />
+    <Compile Include="Common\Strings.Designer.cs">
+      <DependentUpon>Strings.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -216,11 +219,13 @@
     <Content Include="Content\images\ui-icons_ef8c08_256x240.png" />
     <Content Include="Content\images\ui-icons_ffd27a_256x240.png" />
     <Content Include="Content\images\ui-icons_ffffff_256x240.png" />
+    <Content Include="Images\delete.png" />
+    <Content Include="Images\edit.png" />
+    <Content Include="Images\details.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
-    <Folder Include="ViewModels\" />
     <Folder Include="Views\User\" />
     <Folder Include="Common\" />
     <Folder Include="Views\Account\" />
@@ -282,5 +287,15 @@
       <Project>{CBBB0C69-AB34-4286-973B-600A89318A23}</Project>
       <Name>Expenses.Common</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Common\Strings.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Strings.Designer.cs</LastGenOutput>
+      <LogicalName>Expenses.Web.Strings.resources</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Common\Strings.ru.resx">
+      <LogicalName>Expenses.Web.Strings.ru.resources</LogicalName>
+    </EmbeddedResource>
   </ItemGroup>
 </Project>

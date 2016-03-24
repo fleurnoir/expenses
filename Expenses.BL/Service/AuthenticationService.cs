@@ -23,10 +23,12 @@ namespace Expenses.BL.Service
 
         public IExpensesService Login (string login, string password)
         {
+            if (String.IsNullOrEmpty(login))
+                throw new ArgumentNullException (nameof(login));
             using (var context = m_contextProvider.CreateContext ()) 
             {
-                var user = context.Users.FirstOrDefault(u => u.Login == login);
-                if (user != null && ComputeHash (password) != user.PasswordHash)
+                var user = context.Users.FirstOrDefault(u => u.Login.ToLower() == login.ToLower());
+                if (user == null || ComputeHash (password) != user.PasswordHash)
                     return null;
                 return new ExpensesService(m_contextProvider, user.Id);
             }

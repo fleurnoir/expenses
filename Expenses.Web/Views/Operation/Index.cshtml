@@ -1,37 +1,35 @@
-﻿@model IEnumerable<Expenses.Web.Models.OperationViewData>
+﻿
+@model IEnumerable<Expenses.Web.Models.OperationViewData>
 
 @{
-    ViewBag.Title = "Operations";
+    ViewBag.Title = Strings.Operations;
 }
 
-<h2>Operations</h2>
+<h2>@Strings.Operations</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink(@Strings.CreateNew, "Create")
 </p>
 
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Id)
+            Id
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExpenseCategoryName)
+            @Strings.Category
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ExpenseItemName)
+            @Strings.Item
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Amount)
+            @Strings.Amount
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.CurrencyName)
+            @Strings.Currency
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OperationTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.AccountName)
+            @Strings.Date
         </th>
         <th></th>
     </tr>
@@ -55,15 +53,12 @@
                 @Html.DisplayFor(modelItem => item.CurrencyName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.OperationTime)
+                @item.OperationTime.ToString("d")
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AccountName)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                <a href="/Operation/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
+                <a href="/Operation/Details/@item.Id"><img src="/Images/details.png"/></a> |
+                <a href="/Operation/Delete/@item.Id"><img src="/Images/delete.png"/></a>
             </td>
         </tr>
     }

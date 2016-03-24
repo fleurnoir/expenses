@@ -1,13 +1,13 @@
 ﻿@model Expenses.Web.Models.ExpenseItemViewData
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = Strings.Details;
 }
 
-<h2>Details</h2>
+<h2>@Strings.Details</h2>
 
 <div>
-    <h4>Expense Item</h4>
+    <h4>@Strings.ExpenseItem</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -19,7 +19,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Name)
+            @Strings.Name
         </dt>
 
         <dd>
@@ -27,7 +27,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.ExpenseCategoryName)
+            @Strings.Category
         </dt>
 
         <dd>
@@ -35,7 +35,7 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Comment)
+            @Strings.Comment
         </dt>
 
         <dd>
@@ -45,6 +45,6 @@
     </dl>
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink(Strings.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Strings.BackToList, "Index")
 </p>

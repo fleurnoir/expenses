@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using System.Web;
 using System.Security;
 using System.Web.Security;
+using Expenses.Common.Utils;
 
 namespace Expenses.Web.Common
 {
@@ -78,6 +79,11 @@ namespace Expenses.Web.Common
             var service = context.Session [ExpensesServiceKey] as IExpensesService;
             if (service != null)
                 return;
+
+            // auto login for test purposes
+//            service = m_service.Login("andy", "asdf");
+//            context.Session [ExpensesServiceKey] = service;
+//            return;
 
             context.Response.AddHeader("WWW-Authenticate", String.Format("Basic"));
             filterContext.Result = new HttpUnauthorizedResult();

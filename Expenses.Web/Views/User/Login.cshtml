@@ -1,10 +1,10 @@
 ﻿@model Expenses.Web.Models.LoginData
 
 @{
-    ViewBag.Title = "Login page";
+    ViewBag.Title = Strings.Login;
 }
 
-<h2>Login</h2>
+<h2>@Strings.Login</h2>
 
 @using (Html.BeginForm())
 {
@@ -13,7 +13,7 @@
     <div class="form-horizontal">
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Login, new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="Login">@Strings.Name</label>
             <div class="col-md-10">
                 @Html.EditorFor(model => model.Login, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Login, "", new { @class = "text-danger" })
@@ -21,7 +21,7 @@
         </div>
         
         <div class="form-group">
-            @Html.LabelFor(model => model.Password, new { @class = "control-label col-md-2" })
+            <label class="control-label col-md-2" for="Password">@Strings.Password</label>
             <div class="col-md-10">
                 @Html.PasswordFor(model => model.Password, new { @class = "form-control" } )
             </div>
@@ -29,7 +29,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Login" class="btn btn-default" />
+                <input type="submit" value="@Strings.Login" class="btn btn-default" />
             </div>
         </div>
     </div>
