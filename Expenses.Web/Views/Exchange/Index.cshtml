@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Expenses.Web.Models.ExchangeViewData>
+
+@{
+    ViewBag.Title = Strings.Exchange;
+}
+
+<h2>@Strings.Exchange</h2>
+
+<p>
+    @Html.ActionLink(Strings.CreateNew, "Create", null, new { id="create-new" })
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Strings.FromAccount
+        </th>
+        <th>
+            @Strings.ToAccount
+        </th>
+        <th>
+            @Strings.Amount
+        </th>
+        <th>
+            @Strings.ResultAmount
+        </th>
+        <th>
+            @Strings.Comment
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(items => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.SourceAccountName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.DestAccountName)
+            </td>
+            <td align="right">
+                @Html.DisplayFor(items => item.SourceAmount)
+                @(" " + item.SourceCurrencyName)
+            </td>
+            <td align="right">
+                @Html.DisplayFor(items => item.DestAmount)
+                @(" " + item.DestCurrencyName)
+            </td>
+            <td>
+                <a href="/Exchange/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
+                <a href="/Exchange/Details/@item.Id"><img src="/Images/details.png"/></a> |
+                <a href="/Exchange/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+            </td>
+        </tr>
+    }
+
+</table>
+
+@section Scripts {
+<script type="text/javascript">$(function(){$("#create-new").focus();});</script>
+}

@@ -133,9 +133,6 @@
             @Strings.Amount
         </th>
         <th>
-            @Strings.Currency
-        </th>
-        <th>
             @Strings.Date
         </th>
         <th></th>
@@ -153,11 +150,9 @@
             <td>
                 @Html.DisplayFor(modelItem => item.SubcategoryName)
             </td>
-            <td>
+            <td align="right">
                 @Html.DisplayFor(modelItem => item.Amount)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CurrencyName)
+                @(" " + item.CurrencyName)
             </td>
             <td>
                 @item.OperationTime.ToString("d")

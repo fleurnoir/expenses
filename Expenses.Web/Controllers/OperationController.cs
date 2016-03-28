@@ -48,19 +48,6 @@ namespace Expenses.Web.Controllers
                     { CurrencyName = currencies [item.CurrencyId].ShortName }).ToList();
         }
 
-        private static long GetKey(long currencyId, CategoryType type)
-        {
-            switch (type) {
-            case CategoryType.Expense:
-                return currencyId * 2;
-            case CategoryType.Income:
-                return currencyId * 2 + 1;
-            default:
-                throw new ArgumentException ("Unknown category type");
-            }
-        }
-
-
         private IEnumerable<Subcategory> GetFilterSubcategoriesCore(long? categoryId)
         {
             return categoryId == null 
@@ -79,34 +66,16 @@ namespace Expenses.Web.Controllers
 
         protected override IEnumerable<OperationViewData> FillUpViewItems (IEnumerable<OperationViewData> items)
         {
-            var subcategories = Service.GetSubcategories (null).ToDictionary(item=>item.Id);
-            var accounts = Service.GetAccounts ().ToDictionary(item=>item.Id);
-            var categories = Service.GetCategories ().ToDictionary(item=>item.Id);
-            var currencies = Service.GetCurrencies().ToDictionary(item=>item.Id); 
-
-            return items.Select (item => {
-                var subcategory = subcategories[item.SubcategoryId];
-                var account = accounts[item.AccountId];
-                var currency = currencies[account.CurrencyId];
-                var category = categories[subcategory.CategoryId];
-
-                item.AccountName = account.Name;
-                item.SubcategoryName = subcategory.Name;
-                item.CategoryId = subcategory.CategoryId;
-                item.CategoryName = category.Name;
-                item.Type = category.Type;
-                item.CurrencyId = currency.Id;
-                item.CurrencyName = currency.ShortName;
-                return item;
-            });
+            var storage = new CachedEntityStorage (Service);
+            return items.Select (item => FillUpViewItem(item, storage));
         }
 
-        protected override OperationViewData FillUpViewItem (OperationViewData item)
+        private OperationViewData FillUpViewItem (OperationViewData item, IEntityStorage storage)
         {
-            var subcategory = Service.GetSubcategory (item.SubcategoryId);
-            var account = Service.GetAccount (item.AccountId);
-            var currency = Service.GetCurrency (account.CurrencyId);
-            var category = Service.GetCategory (subcategory.CategoryId);
+            var subcategory = storage.Get<Subcategory> (item.SubcategoryId);
+            var account = storage.Get<Account> (item.AccountId);
+            var currency = storage.Get<Currency> (account.CurrencyId);
+            var category = storage.Get<Category> (subcategory.CategoryId);
 
             item.AccountName = account.Name;
             item.SubcategoryName = subcategory.Name;
@@ -116,6 +85,11 @@ namespace Expenses.Web.Controllers
             item.CurrencyId = currency.Id;
             item.CurrencyName = currency.ShortName;
             return item;
+        }
+
+        protected override OperationViewData FillUpViewItem (OperationViewData item)
+        {
+            return FillUpViewItem(item, new EntityStorage(Service));
         }
 
         protected override void PopulateSelectLists (OperationViewData entity)

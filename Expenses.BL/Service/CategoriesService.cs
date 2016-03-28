@@ -15,6 +15,16 @@ namespace Expenses.BL.Service
             using(var db = CreateContext())
                 return db.Categories.OrderBy(c=>c.Name).ToList();
         }
+
+        public IList<Category> Select (CategoryType? categoryType)
+        {
+            using (var context = CreateContext ()) {
+                IQueryable<Category> query = context.Categories;
+                if (categoryType != null)
+                    query = query.Where (c => c.Type == (CategoryType)categoryType);
+                return query.OrderBy(c=>c.Name).ToList ();
+            }
+        }
     }
 }
 

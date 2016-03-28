@@ -54,4 +54,8 @@
     <data name="ChooseCategory"><value>Choose Category</value></data>
     <data name="ShowFilter"><value>Show filter</value></data>
     <data name="HideFilter"><value>Hide filter</value></data>
+    <data name="Exchange"><value>Exchange</value></data>
+    <data name="FromAccount"><value>From Account</value></data>
+    <data name="ToAccount"><value>To Account</value></data>
+    <data name="ResultAmount"><value>Result Amount</value></data>
 </root>

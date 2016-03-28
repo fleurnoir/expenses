@@ -1,0 +1,114 @@
+﻿@model Expenses.Web.Models.ExchangeViewData
+
+@{
+    ViewBag.Title = Strings.NewRecord;
+}
+
+<h2>@Strings.NewRecord</h2>
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>@Strings.Exchange</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="SourceAccountId">@Strings.FromAccount</label>
+            <div class="col-md-10">
+                @Html.DropDownList("SourceAccountId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.SourceAccountId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="DestAccountId">@Strings.ToAccount</label>
+            <div class="col-md-10">
+                @Html.DropDownList("DestAccountId", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.DestAccountId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="SourceAmount">@Strings.Amount</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.SourceAmount, new { htmlAttributes = new { @class = "form-control", style = "display:inline;" } })
+                <span id="SourceCurrencyName">@ViewBag.SourceCurrencyName</span><br/>
+                @Html.ValidationMessageFor(model => model.SourceAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group" id="DestAmountGroup">
+            <label class="control-label col-md-2" for="DestAmount">@Strings.ResultAmount</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DestAmount, new { htmlAttributes = new { @class = "form-control", style = "display:inline;" } })
+                <span id="DestCurrencyName">@ViewBag.DestCurrencyName</span><br/>
+                @Html.ValidationMessageFor(model => model.DestAmount, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2" for="Comment">@Strings.Comment</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Comment, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="@Strings.Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink(Strings.BackToList, "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+    $(function(){
+        var idPairs = { 
+            "#SourceAccountId" : "#SourceCurrencyName",
+            "#DestAccountId" : "#DestCurrencyName" 
+            };
+
+        var currencies = {
+            "#SourceAccountId" : @ViewBag.SourceCurrencyId,
+            "#DestAccountId" : @ViewBag.DestCurrencyId
+        }; 
+
+        var updateEditors = function() {
+            if(currencies["#SourceAccountId"] == currencies["#DestAccountId"])
+                $("#DestAmountGroup").hide();
+            else
+                $("#DestAmountGroup").show();
+        };
+
+        var onAccountChange = function(e) {
+            $.ajax({
+                type: "POST", contentType: "application/json; charset=utf-8", dataType: "json",
+                url: "/Exchange/GetCurrency",
+                data: "{ accountId: " + $(e.target).val() + " }",
+                success: function(data, status) {     
+                    var selectId = "#"+$(e.target).attr("id");
+                    $(idPairs[selectId]).empty().text(data.name);
+                    currencies[selectId] = data.id;
+                    updateEditors();
+                }
+            });
+        };
+
+        for(var id in idPairs)
+            $(id).change(onAccountChange);
+
+        updateEditors();
+
+        $("#SourceAccountId").focus();
+    });
+    </script>
+}

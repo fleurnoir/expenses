@@ -2,12 +2,8 @@
 
 namespace Expenses.BL.Entities
 {
-    public class Operation : Entity
+    public class Operation : OperationBase
     {
-        public DateTime OperationTime { get; set; }
-
-        public long UserId { get; set; }
-
         public long AccountId { get; set; }
 
         public double Amount { get; set; }

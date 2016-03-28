@@ -1,0 +1,76 @@
+﻿@model Expenses.Web.Models.ExchangeViewData
+
+@{
+    ViewBag.Title = Strings.Delete;
+}
+
+<h2>@Strings.Delete</h2>
+
+<h3>@Strings.RecordDeleteConfirmation</h3>
+<div>
+    <h4>@Strings.Exchange</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Strings.FromAccount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceAccountName)
+        </dd>
+
+        <dt>
+            @Strings.ToAccount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DestAccountName)
+        </dd>
+
+        <dt>
+            @Strings.Amount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceAmount)
+            @(" " + Model.SourceCurrencyName)
+        </dd>
+
+        @if(Model.SourceCurrencyId != Model.DestCurrencyId) {
+        <dt>
+            @Strings.ResultAmount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DestAmount)
+            @(" " + Model.DestCurrencyName)
+        </dd>
+        }
+
+        <dt>
+            @Strings.Comment
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="@Strings.Delete" class="btn btn-default" /> |
+            @Html.ActionLink(@Strings.BackToList, "Index")
+        </div>
+    }
+</div>

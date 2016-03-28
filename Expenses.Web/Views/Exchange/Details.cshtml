@@ -1,0 +1,70 @@
+﻿@model Expenses.Web.Models.ExchangeViewData
+
+@{
+    ViewBag.Title = Strings.Details;
+}
+
+<h2>@Strings.Details</h2>
+
+<div>
+    <h4>@Strings.Exchange</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Strings.FromAccount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceAccountName)
+        </dd>
+
+        <dt>
+            @Strings.ToAccount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DestAccountName)
+        </dd>
+
+        <dt>
+            @Strings.Amount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SourceAmount)
+            @(" " + Model.SourceCurrencyName)
+        </dd>
+
+        @if(Model.SourceCurrencyId != Model.DestCurrencyId) {
+        <dt>
+            @Strings.ResultAmount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DestAmount)
+            @(" " + Model.DestCurrencyName)
+        </dd>
+        }
+
+        <dt>
+            @Strings.Comment
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(Strings.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Strings.BackToList, "Index")
+</p>

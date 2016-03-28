@@ -142,6 +142,8 @@
     <Compile Include="Models\CategoryViewData.cs" />
     <Compile Include="Models\SubcategoryViewData.cs" />
     <Compile Include="Models\StatsItem.cs" />
+    <Compile Include="Models\ExchangeViewData.cs" />
+    <Compile Include="Controllers\ExchangeController.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -222,6 +224,11 @@
     <Content Include="Views\Subcategory\Details.cshtml" />
     <Content Include="Views\Subcategory\Edit.cshtml" />
     <Content Include="Views\Subcategory\Index.cshtml" />
+    <Content Include="Views\Exchange\Create.cshtml" />
+    <Content Include="Views\Exchange\Delete.cshtml" />
+    <Content Include="Views\Exchange\Details.cshtml" />
+    <Content Include="Views\Exchange\Edit.cshtml" />
+    <Content Include="Views\Exchange\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -232,6 +239,7 @@
     <Folder Include="Views\Operation\" />
     <Folder Include="Views\Category\" />
     <Folder Include="Views\Subcategory\" />
+    <Folder Include="Views\Exchange\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

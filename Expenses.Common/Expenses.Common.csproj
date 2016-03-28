@@ -46,7 +46,6 @@
     <Compile Include="Service\IExpensesService.cs" />
     <Compile Include="Service\IAuthenticationService.cs" />
     <Compile Include="Utils\IServiceProvider.cs" />
-    <Compile Include="Service\CachedEntityService.cs" />
     <Compile Include="Service\ExpensesServiceHelper.cs" />
     <Compile Include="Entities\Category.cs" />
     <Compile Include="Entities\CategoryType.cs" />
@@ -55,6 +54,7 @@
     <Compile Include="Service\StatsItem.cs" />
     <Compile Include="Entities\Exchange.cs" />
     <Compile Include="Entities\OperationBase.cs" />
+    <Compile Include="Service\IEntityStorage.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

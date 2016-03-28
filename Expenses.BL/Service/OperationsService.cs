@@ -5,92 +5,83 @@ using System.Linq;
 using System.Data;
 using Expenses.Common.Utils;
 using System.Collections.Generic;
+using Expenses.Common.Service;
 
 namespace Expenses.BL.Service
 {
-    public class OperationsService : EntityService<Operation>
+    public class OperationsService : OperationsServiceBase<Operation>
     {
-        private long m_userId;
-
-        public OperationsService (IDataContextProvider provider, long userId):base(provider)
+        public OperationsService (IDataContextProvider provider, long userId):base(provider, userId)
         {
-            m_userId = userId;
         }
 
-        public override Operation Add(Operation operation)
+        protected override void CommitOperation(ExpensesContext db, Operation operation, bool rollback)
         {
-            operation.UserId = m_userId;
-            operation.OperationTime = DateTime.Now;
-            operation.CheckFields ();
-            using (var context = CreateContext ())
-            using (var transaction = context.BeginTransaction(IsolationLevel.Serializable))    
-            {
-                CommitOperation (context, operation);
-                operation = context.Operations.Add (operation);
-                context.SaveChanges ();
-                transaction.Commit ();
-            }
-            return operation;
-        }
-
-        private static void RollbackOperation(ExpensesContext context, Operation operation)
-        {
-            CommitOperation (context, operation, true);
-        }
-
-        private static void CommitOperation(ExpensesContext context, Operation operation, bool backwards = false)
-        {
-            var account = context.Accounts.Find (operation.AccountId);
+            var account = db.Accounts.Find (operation.AccountId);
             var type = 
-                (from ei in context.Subcategories
-                    join ec in context.Categories on ei.CategoryId equals ec.Id
+                (from ei in db.Subcategories
+                    join ec in db.Categories on ei.CategoryId equals ec.Id
                     where ei.Id == operation.SubcategoryId
                     select ec.Type).First ();
             var accountAmount = Math.Round (account.Amount, 2);
             var operationAmount = Math.Round (operation.Amount, 2);
             var sign1 = type == CategoryType.Income ? 1.0 : -1.0;
-            var sign2 = backwards ? -1.0 : 1.0;
+            var sign2 = rollback ? -1.0 : 1.0;
             operation.Amount = operationAmount;
             account.Amount = accountAmount + sign1 * sign2 * operationAmount;
         }
 
-        public override Operation Update(Operation operation)
+        public IList<Operation> Select (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
-            operation.UserId = m_userId;
-            //operation.OperationTime = DateTime.Now;
-            operation.CheckFields ();
-            using (var context = CreateContext ())
-            using (var transaction = context.BeginTransaction(IsolationLevel.Serializable))    
-            {
-                var dbOperation = context.Operations.Find (operation.Id);
-                //Operation time must stay unchanged
-                operation.OperationTime = dbOperation.OperationTime;
-                RollbackOperation (context, dbOperation);
-                CommitOperation (context, operation);
-                Cloner.Clone (operation, dbOperation);
-                context.SaveChanges ();
-                transaction.Commit ();
-                return dbOperation;
-            }
+            using (var db = CreateContext ())
+                return GetQuery (db, startTime, endTime, subcategoryId, categoryId).OrderByDescending (item => item.Id).ToList ();        
         }
 
-        public override void Delete (long itemId)
+        private static IQueryable<Operation> GetQuery (ExpensesContext db, DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
-            using (var context = CreateContext ())
-            using (var transaction = context.BeginTransaction(IsolationLevel.Serializable))    
-            {
-                var operation = context.Operations.Find (itemId);
-                RollbackOperation (context, operation);
-                context.Operations.Remove (operation);
-                context.SaveChanges ();
-                transaction.Commit ();
+            IQueryable<Operation> query = db.Operations;
+            if (categoryId != null) {
+                query = from op in db.Operations
+                    join sub in db.Subcategories on op.SubcategoryId equals sub.Id
+                        where sub.CategoryId == categoryId
+                    select op;
             }
+            if (subcategoryId != null)
+                query = query.Where (op => op.SubcategoryId == subcategoryId);
+            if (startTime != null)
+                query = query.Where (op => op.OperationTime >= startTime);
+            if (endTime != null)
+                query = query.Where (op => op.OperationTime <= endTime);
+            return query;
         }
 
-        public override IList<Operation> Select ()
+        public IList<StatsItem> GetStatistics (DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), long? subcategoryId = default(long?), long? categoryId = default(long?))
         {
-            using (var context = CreateContext ())
-                return context.Operations.OrderByDescending (o=>o.Id).ToList();
+            using (var db = CreateContext ())
+            {
+                var query = 
+                    from op in db.Operations
+                    join sub in db.Subcategories on op.SubcategoryId equals sub.Id
+                    join cat in db.Categories on sub.CategoryId equals cat.Id
+                    join acc in db.Accounts on op.AccountId equals acc.Id
+                    select new {op, sub, cat, acc};
+
+                if (categoryId != null)
+                    query = query.Where (i => i.cat.Id == categoryId);
+                if (subcategoryId != null)
+                    query = query.Where (i => i.sub.Id == subcategoryId);
+                if (startTime != null)
+                    query = query.Where (i => i.op.OperationTime >= startTime);
+                if (endTime != null)
+                    query = query.Where (i => i.op.OperationTime <= endTime);
+
+                return query.GroupBy (i => new {i.acc.CurrencyId, i.cat.Type})
+                    .Select (g => new StatsItem {
+                        CurrencyId = g.Key.CurrencyId,
+                        Type = g.Key.Type,
+                        Amount = g.Sum (i => i.op.Amount)
+                    }).ToList();
+            }
         }
     }
 }

@@ -54,4 +54,8 @@
     <data name="ChooseCategory"><value>Выберите категорию</value></data>
     <data name="ShowFilter"><value>Показать фильтр</value></data>
     <data name="HideFilter"><value>Скрыть фильтр</value></data>
+    <data name="Exchange"><value>Обмен</value></data>
+    <data name="FromAccount"><value>Со счета</value></data>
+    <data name="ToAccount"><value>На счет</value></data>
+    <data name="ResultAmount"><value>Результ. сумма</value></data>
 </root>

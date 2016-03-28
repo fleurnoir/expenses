@@ -23,6 +23,7 @@ namespace Expenses.BL.Service
             RegisterFactory<Subcategory> ();
             RegisterFactory<Category> ((provider,userId)=>new CategoriesService(provider));
             RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));
+            RegisterFactory<Exchange> ((provider,userId)=>new ExchangesService(provider, userId));
         }
 
         private IDataContextProvider m_provider;
@@ -68,6 +69,12 @@ namespace Expenses.BL.Service
         public void DeleteOperation (long operationId) => Delete<Operation>(operationId);
         public Operation GetOperation (long operationId) => Select<Operation>(operationId);
 
+        public Exchange AddExchange(Exchange operation) => Add(operation);
+        public Exchange UpdateExchange(Exchange operation) => Update(operation);
+        public void DeleteExchange(long exchangeId) => Delete<Exchange>(exchangeId);
+        public Exchange GetExchange(long exchangeId) => Select<Exchange>(exchangeId);
+        public IList<Exchange> GetExchanges() => Select<Exchange>();
+
         public Subcategory AddSubcategory (Subcategory expense) => Add(expense);
         public Subcategory UpdateSubcategory (Subcategory expense) => Update(expense);
         public void DeleteSubcategory (long expenseId) => Delete<Subcategory>(expenseId);
@@ -90,55 +97,12 @@ namespace Expenses.BL.Service
 
         public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
-            using (var db = CreateContext ())
-                return GetQuery (db, startTime, endTime, subcategoryId, categoryId).OrderByDescending (item => item.Id).ToList ();        
-        }
-
-        private static IQueryable<Operation> GetQuery (ExpensesContext db, DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
-        {
-            IQueryable<Operation> query = db.Operations;
-            if (categoryId != null) {
-                query = from op in db.Operations
-                join sub in db.Subcategories on op.SubcategoryId equals sub.Id
-                where sub.CategoryId == categoryId
-                select op;
-            }
-            if (subcategoryId != null)
-                query = query.Where (op => op.SubcategoryId == subcategoryId);
-            if (startTime != null)
-                query = query.Where (op => op.OperationTime >= startTime);
-            if (endTime != null)
-                query = query.Where (op => op.OperationTime <= endTime);
-            return query;
+            return ((OperationsService)GetEntityService<Operation>()).Select(startTime, endTime, subcategoryId, categoryId);        
         }
 
         public IList<StatsItem> GetStatistics (DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), long? subcategoryId = default(long?), long? categoryId = default(long?))
         {
-            using (var db = CreateContext ())
-            {
-                var query = 
-                    from op in db.Operations
-                    join sub in db.Subcategories on op.SubcategoryId equals sub.Id
-                    join cat in db.Categories on sub.CategoryId equals cat.Id
-                    join acc in db.Accounts on op.AccountId equals acc.Id
-                    select new {op, sub, cat, acc};
-
-                if (categoryId != null)
-                    query = query.Where (i => i.cat.Id == categoryId);
-                if (subcategoryId != null)
-                    query = query.Where (i => i.sub.Id == subcategoryId);
-                if (startTime != null)
-                    query = query.Where (i => i.op.OperationTime >= startTime);
-                if (endTime != null)
-                    query = query.Where (i => i.op.OperationTime <= endTime);
-
-                return query.GroupBy (i => new {i.acc.CurrencyId, i.cat.Type})
-                    .Select (g => new StatsItem {
-                    CurrencyId = g.Key.CurrencyId,
-                    Type = g.Key.Type,
-                    Amount = g.Sum (i => i.op.Amount)
-                    }).ToList();
-            }
+            return ((OperationsService)GetEntityService<Operation>()).GetStatistics(startTime, endTime, subcategoryId, categoryId);
         }
 
         public IList<Subcategory> GetSubcategories (long? categoryId = null)
@@ -153,12 +117,7 @@ namespace Expenses.BL.Service
 
         public IList<Category> GetCategories (CategoryType? categoryType = null)
         {
-            using (var context = m_provider.CreateContext ()) {
-                IQueryable<Category> query = context.Categories;
-                if (categoryType != null)
-                    query = query.Where (c => c.Type == (CategoryType)categoryType);
-                return query.OrderBy(c=>c.Name).ToList ();
-            }
+            return ((CategoriesService)GetEntityService<Category> ()).Select (categoryType);
         }
 
         public IList<Currency> GetCurrencies () => Select<Currency>();

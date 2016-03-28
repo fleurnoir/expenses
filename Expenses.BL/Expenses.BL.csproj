@@ -47,6 +47,8 @@
     <Compile Include="Common\DbContextTransactionScope.cs" />
     <Compile Include="Service\CategoriesService.cs" />
     <Compile Include="Service\EntityService.cs" />
+    <Compile Include="Service\OperationsServiceBase.cs" />
+    <Compile Include="Service\ExchangesService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

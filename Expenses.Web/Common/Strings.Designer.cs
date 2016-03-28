@@ -297,5 +297,29 @@ namespace Expenses.Web {
                 return ResourceManager.GetString("HideFilter", resourceCulture);
             }
         }
+        
+        public static string Exchange {
+            get {
+                return ResourceManager.GetString("Exchange", resourceCulture);
+            }
+        }
+        
+        public static string FromAccount {
+            get {
+                return ResourceManager.GetString("FromAccount", resourceCulture);
+            }
+        }
+        
+        public static string ToAccount {
+            get {
+                return ResourceManager.GetString("ToAccount", resourceCulture);
+            }
+        }
+        
+        public static string ResultAmount {
+            get {
+                return ResourceManager.GetString("ResultAmount", resourceCulture);
+            }
+        }
     }
 }

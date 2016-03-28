@@ -13,6 +13,7 @@ namespace Expenses.BL.Entities
         public DbSet<User> Users { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Operation> Operations { get; set; }
+        public DbSet<Exchange> Exchanges { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Currency> Currencies { get; set; }
     }

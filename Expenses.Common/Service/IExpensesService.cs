@@ -16,6 +16,12 @@ namespace Expenses.BL.Service
         IList<Operation> GetOperations (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
         IList<StatsItem> GetStatistics (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
 
+        Exchange AddExchange(Exchange operation);
+        Exchange UpdateExchange(Exchange operation);
+        void DeleteExchange(long exchangeId);
+        Exchange GetExchange(long exchangeId);
+        IList<Exchange> GetExchanges();
+
         Subcategory AddSubcategory(Subcategory expense);
         Subcategory UpdateSubcategory(Subcategory expense);
         void DeleteSubcategory(long expenseId);
