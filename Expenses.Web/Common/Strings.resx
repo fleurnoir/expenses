@@ -20,10 +20,8 @@
     <data name="Currencies"><value>Currencies</value></data>
     <data name="Category"><value>Category</value></data>
     <data name="Categories"><value>Categories</value></data>
-    <data name="ExpenseCategories"><value>ExpenseCategories</value></data>
-    <data name="Item"><value>Item</value></data>
-    <data name="ExpenseItem"><value>Expense Item</value></data>
-    <data name="ExpenseItems"><value>Expense Items</value></data>
+    <data name="Subcategory"><value>Subcategory</value></data>
+    <data name="Subcategories"><value>Subcategories</value></data>
     <data name="Create"><value>Create</value></data>
     <data name="CreateNew"><value>Create New</value></data>
     <data name="Logout"><value>Logout</value></data>
@@ -34,7 +32,7 @@
     <data name="Password"><value>Password</value></data>
     <data name="NewRecord"><value>New Record</value></data>
     <data name="NewCategory"><value>New Category</value></data>
-    <data name="NewExpenseItem"><value>New Expense Item</value></data>
+    <data name="NewSubcategory"><value>New Subcategory</value></data>
     <data name="Comment"><value>Comment</value></data>
     <data name="BackToList"><value>Back to List</value></data>
     <data name="Cancel"><value>Cancel</value></data>
@@ -47,4 +45,13 @@
     <data name="Expense"><value>Expense</value></data>
     <data name="Income"><value>Income</value></data>
     <data name="ShortName"><value>Short Name</value></data>
+    <data name="StartDate"><value>Start Date</value></data>
+    <data name="EndDate"><value>End Date</value></data>
+    <data name="JsDateFormat"><value>mm/dd/yy</value></data>
+    <data name="CsDateFormat"><value>MM/dd/yyyy</value></data>
+    <data name="Apply"><value>Apply</value></data>
+    <data name="All"><value>All</value></data>
+    <data name="ChooseCategory"><value>Choose Category</value></data>
+    <data name="ShowFilter"><value>Show filter</value></data>
+    <data name="HideFilter"><value>Hide filter</value></data>
 </root>

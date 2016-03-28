@@ -4,11 +4,11 @@ using Expenses.Common.Utils;
 
 namespace Expenses.Web.Models
 {
-    public class ExpenseCategoryViewData : ExpenseCategory
+    public class CategoryViewData : Category
     {
-        public ExpenseCategoryViewData(){}
+        public CategoryViewData(){}
 
-        public ExpenseCategoryViewData(ExpenseCategory category)
+        public CategoryViewData(Category category)
         {
             Cloner.Clone (category, this);
         }

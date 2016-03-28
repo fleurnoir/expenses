@@ -94,27 +94,15 @@ namespace Expenses.Web {
             }
         }
         
-        public static string ExpenseCategories {
+        public static string Subcategory {
             get {
-                return ResourceManager.GetString("ExpenseCategories", resourceCulture);
+                return ResourceManager.GetString("Subcategory", resourceCulture);
             }
         }
         
-        public static string Item {
+        public static string Subcategories {
             get {
-                return ResourceManager.GetString("Item", resourceCulture);
-            }
-        }
-        
-        public static string ExpenseItem {
-            get {
-                return ResourceManager.GetString("ExpenseItem", resourceCulture);
-            }
-        }
-        
-        public static string ExpenseItems {
-            get {
-                return ResourceManager.GetString("ExpenseItems", resourceCulture);
+                return ResourceManager.GetString("Subcategories", resourceCulture);
             }
         }
         
@@ -178,9 +166,9 @@ namespace Expenses.Web {
             }
         }
         
-        public static string NewExpenseItem {
+        public static string NewSubcategory {
             get {
-                return ResourceManager.GetString("NewExpenseItem", resourceCulture);
+                return ResourceManager.GetString("NewSubcategory", resourceCulture);
             }
         }
         
@@ -253,6 +241,60 @@ namespace Expenses.Web {
         public static string ShortName {
             get {
                 return ResourceManager.GetString("ShortName", resourceCulture);
+            }
+        }
+        
+        public static string StartDate {
+            get {
+                return ResourceManager.GetString("StartDate", resourceCulture);
+            }
+        }
+        
+        public static string EndDate {
+            get {
+                return ResourceManager.GetString("EndDate", resourceCulture);
+            }
+        }
+        
+        public static string JsDateFormat {
+            get {
+                return ResourceManager.GetString("JsDateFormat", resourceCulture);
+            }
+        }
+        
+        public static string CsDateFormat {
+            get {
+                return ResourceManager.GetString("CsDateFormat", resourceCulture);
+            }
+        }
+        
+        public static string Apply {
+            get {
+                return ResourceManager.GetString("Apply", resourceCulture);
+            }
+        }
+        
+        public static string All {
+            get {
+                return ResourceManager.GetString("All", resourceCulture);
+            }
+        }
+        
+        public static string ChooseCategory {
+            get {
+                return ResourceManager.GetString("ChooseCategory", resourceCulture);
+            }
+        }
+        
+        public static string ShowFilter {
+            get {
+                return ResourceManager.GetString("ShowFilter", resourceCulture);
+            }
+        }
+        
+        public static string HideFilter {
+            get {
+                return ResourceManager.GetString("HideFilter", resourceCulture);
             }
         }
     }

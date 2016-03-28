@@ -9,9 +9,9 @@
     <input type="text" class="form-control" id="add-category-name"/>
 </div>
 
-<div id="add-item-dialog" style="display:none;" title="@Strings.NewExpenseItem">
+<div id="add-sub-dialog" style="display:none;" title="@Strings.NewSubcategory">
     <label class="control-label">@Strings.Name</label>
-    <input type="text" class="form-control" id="add-item-name"/>
+    <input type="text" class="form-control" id="add-sub-name"/>
 </div>
 
 <h2>@Strings.NewRecord</h2>
@@ -26,18 +26,18 @@
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="ExpenseCategoryId">@Strings.Category</label>
+            <label class="control-label col-md-2" for="CategoryId">@Strings.Category</label>
             <div class="col-md-10">
-                @Html.DropDownList("ExpenseCategoryId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
+                @Html.DropDownList("CategoryId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
                 <button type="button" class="btn btn-default" id="add-category" tabIndex="-1">+</button>
             </div>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="ExpenseItemId">@Strings.Item</label>
+            <label class="control-label col-md-2" for="SubcategoryId">@Strings.Subcategory</label>
             <div class="col-md-10">
-                @Html.DropDownList("ExpenseItemId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
-                <button type="button" class="btn btn-default" id="add-item" tabIndex="-1">+</button>
+                @Html.DropDownList("SubcategoryId", null, htmlAttributes: new { @class = "form-control", style = "display:inline;" })
+                <button type="button" class="btn btn-default" id="add-sub" tabIndex="-1">+</button>
             </div>
         </div>
 
@@ -91,15 +91,15 @@
                 console.log(textStatus, errorThrown);
             };
 
-            $("#ExpenseCategoryId").change(function(e) {
+            $("#CategoryId").change(function(e) {
                 $.ajax({
                     type: "POST",
-                    url: "/Operation/GetExpenseItems",
+                    url: "/Operation/GetSubcategories",
                     data: "{ categoryId: " + $(e.target).val() + " }",
                     contentType: "application/json; charset=utf-8",
                     dataType: "json",
                     success: function(data, status) {     
-                        var $el = $("#ExpenseItemId");
+                        var $el = $("#SubcategoryId");
                         $el.empty(); // remove old options
                         var len = data.length;
                         for(var i=0; i < len; i++) {
@@ -137,11 +137,11 @@
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function(data, status) {     
-                                var $el = $("#ExpenseCategoryId");
+                                var $el = $("#CategoryId");
                                 $el.append($("<option></option>")
                                     .attr("value", data.id).text(data.name));
                                 $el.val(data.id);
-                                $("#ExpenseItemId").empty();                    
+                                $("#SubcategoryId").empty();                    
                                 $("#add-category-dialog").dialog("close");
                             },
                             error: errorFun
@@ -152,23 +152,23 @@
                 }            
             });
 
-            $( "#add-item-dialog" ).dialog({
+            $( "#add-sub-dialog" ).dialog({
                 autoOpen: false,
                 modal: true,  
                 buttons: {
                     OK: function() {
                         $.ajax({
                             type: "POST",
-                            url: "/Operation/AddExpenseItem",
-                            data: "{ itemName: '" + $("#add-item-name").val() + "', categoryId: " + $("#ExpenseCategoryId").val() + " }",
+                            url: "/Operation/AddSubcategory",
+                            data: "{ subcategoryName: '" + $("#add-sub-name").val() + "', categoryId: " + $("#CategoryId").val() + " }",
                             contentType: "application/json; charset=utf-8",
                             dataType: "json",
                             success: function(data, status) {     
-                                var $el = $("#ExpenseItemId");
+                                var $el = $("#SubcategoryId");
                                 $el.append($("<option></option>")
                                     .attr("value", data.id).text(data.name));
                                 $el.val(data.id);
-                                $("#add-item-dialog").dialog("close");
+                                $("#add-sub-dialog").dialog("close");
                             },
                             error: errorFun
                         });
@@ -181,10 +181,11 @@
                $( "#add-category-dialog" ).dialog( "open" );
             });
 
-            $( "#add-item" ).click(function() {
-               $( "#add-item-dialog" ).dialog( "open" );
+            $( "#add-sub" ).click(function() {
+               $( "#add-sub-dialog" ).dialog( "open" );
             });
 
+            $("#CategoryId").focus();
         });
 </script>
 

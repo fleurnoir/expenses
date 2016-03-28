@@ -1,15 +1,122 @@
-﻿
-@model IEnumerable<Expenses.Web.Models.OperationViewData>
+﻿@using PagedList
+@using PagedList.Mvc
+@using Expenses.Web.Models
+@model IPagedList<OperationViewData>
 
 @{
     ViewBag.Title = Strings.Operations;
 }
 
-<h2>@Strings.Operations</h2>
+@section Styles {
+    @Styles.Render("~/Content/pagedlist")
+    @Styles.Render("~/Content/jquery-ui")
+<style type="text/css">
+    .ui-datepicker {
+        z-index: 1000 !important;
+    }
+</style>
+}
 
-<p>
-    @Html.ActionLink(@Strings.CreateNew, "Create")
-</p>
+@{
+    string dateFrom = Request.Params["dateFrom"];
+    string dateTo = Request.Params["dateTo"];
+    string categoryId = Request.Params["categoryId"];
+    string subcategoryId = Request.Params["subcategoryId"];
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jquery-ui")
+<script type="text/javascript">
+    $(function(){
+        var getDate = function(selector) {
+            return $.datepicker.formatDate("yy-mm-dd", $(selector).datepicker("getDate"))
+        }
+
+        var setDate = function(selector, dateString) {
+            $(selector).datepicker("setDate", $.datepicker.parseDate("yy-mm-dd", dateString));
+        }
+
+        var options = { dateFormat: "@Strings.JsDateFormat" };
+        $("#date-from").datepicker(options);
+        setDate("#date-from", "@dateFrom");
+        $("#date-to").datepicker(options);
+        setDate("#date-to", "@dateTo");
+
+        $("#apply-filter").click(function(e){
+            $a = $(e.target);
+            $a.attr("href","/Operation/Index?dateFrom=" + getDate("#date-from") + 
+                            "&dateTo=" + getDate("#date-to") +
+                            "&categoryId=" + $("#CategoryId").val() +
+                            "&subcategoryId=" + $("#SubcategoryId").val());
+        });
+
+        $("#show-filter").click(function(e){
+            $filter = $("#filter");
+            if($filter.is(":visible")){
+                $filter.hide();
+                $(e.target).text("@Strings.ShowFilter");
+            }
+            else {
+                $filter.show();
+                $(e.target).text("@Strings.HideFilter");
+            }
+        });
+
+        $("#CategoryId").change(function(e) {
+            $.ajax({
+                type: "POST", contentType: "application/json; charset=utf-8", dataType: "json",
+                url: "/Operation/GetFilterSubcategories",
+                data: "{ categoryId: " + $(e.target).val() + " }",
+                success: function(data, status) {     
+                    var $el = $("#SubcategoryId");
+                    $el.empty();
+                    var len = data.length;
+                    for(var i=0; i < len; i++) {
+                        $el.append($("<option></option>")
+                           .attr("value", data[i].id).text(data[i].name));
+                    }                    
+                }
+            });
+        });
+
+        $("#create-new").focus();
+    });
+</script>
+}
+
+<h2>@Strings.Operations</h2>
+<p>@Html.ActionLink(@Strings.CreateNew, "Create", null, new {id = "create-new"})
+ | <a href="#" id="show-filter">@Strings.ShowFilter</a></p>
+
+<div id="filter" class="form-horizontal" style="display:none;">
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="date-from">@Strings.StartDate</label> 
+        <div class="col-md-10">
+            <input type='text' class='form-control' id='date-from'/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="date-to">@Strings.EndDate</label> 
+        <div class="col-md-10">
+            <input type='text' class='form-control' id='date-to'/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="CategoryId">@Strings.Category</label> 
+        <div class="col-md-10">
+            @Html.DropDownList("CategoryId", null, new { @class = "form-control" })
+        </div>
+     </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="SubcategoryId">@Strings.Subcategory</label> 
+        <div class="col-md-10">
+            @Html.DropDownList("SubcategoryId", null, new { @class = "form-control" })
+        </div>
+    </div>
+    <a href="#" class="btn btn-default" id="apply-filter">@Strings.Apply</a>
+</div>
+
+@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId } ))
 
 <table class="table">
     <tr>
@@ -20,7 +127,7 @@
             @Strings.Category
         </th>
         <th>
-            @Strings.Item
+            @Strings.Subcategory
         </th>
         <th>
             @Strings.Amount
@@ -41,10 +148,10 @@
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseCategoryName)
+                @Html.DisplayFor(modelItem => item.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ExpenseItemName)
+                @Html.DisplayFor(modelItem => item.SubcategoryName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Amount)
@@ -64,3 +171,33 @@
     }
 
 </table>
+
+@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId } ))
+@if(ViewBag.Income != null)
+{
+<p>
+    <b>@Strings.Income:</b>
+    @{
+        var income = (IEnumerable<StatsItemViewData>)ViewBag.Income;
+        var first = true;
+        foreach(var item in income){
+            @((first ? "" : "; ") + item.Amount + " " + item.CurrencyName)
+            first = false;
+        }
+    }
+</p>
+}
+@if(ViewBag.Expense != null)
+{
+<p>
+    <b>@Strings.Expense:</b>
+    @{
+        var expense = (IEnumerable<StatsItemViewData>)ViewBag.Expense;
+        var first = true;
+        foreach(var item in expense){
+            @((first ? "" : "; ") + item.Amount + " " + item.CurrencyName)
+            first = false;
+        }
+    }
+</p>
+}

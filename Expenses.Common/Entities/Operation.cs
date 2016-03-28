@@ -12,7 +12,7 @@ namespace Expenses.BL.Entities
 
         public double Amount { get; set; }
 
-        public long ExpenseItemId { get; set; }
+        public long SubcategoryId { get; set; }
 
         public override void CheckFields ()
         {
@@ -20,8 +20,8 @@ namespace Expenses.BL.Entities
                 throw new ArgumentException ("Operation amount must be >= 0.01");
             if (AccountId <= 0)
                 throw new ArgumentException ("Account not chosen");
-            if (ExpenseItemId <= 0)
-                throw new ArgumentException ("ExpenseItem not chosen");
+            if (SubcategoryId <= 0)
+                throw new ArgumentException ("Subcategory not chosen");
         }
     }
 }

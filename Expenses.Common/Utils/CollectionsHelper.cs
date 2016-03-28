@@ -34,6 +34,25 @@ namespace Expenses.Common.Utils
         public static IDictionary<TKey, IList<TSource>> ToOneToManyMap<TSource, TKey> (
             this IEnumerable<TSource> source, 
             Func<TSource,TKey> keySelector) => source.ToOneToManyMap(keySelector, item=>item);
+
+//        public static IDictionary<TKey, TResult> MapAggregate<TSource,TKey,TResult>(
+//            this IEnumerable<TSource> source,
+//            Func<TSource,TKey> keySelector,
+//            Func<TSource,TResult> firstResult,
+//            Func<TResult,TSource,TResult> nextResult)
+//        {
+//            var result = new Dictionary<TKey, TResult> ();
+//            foreach (var item in source) 
+//            {
+//                var key = keySelector (item);
+//                TResult current;
+//                if (!result.TryGetValue (key, out current))
+//                    result.Add(key, firstResult(item));
+//                else
+//                    result [key] = nextResult (current, item);
+//            }
+//            return result;
+//        }
     }
 }
 

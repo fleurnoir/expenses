@@ -1,13 +1,13 @@
-﻿@model IEnumerable<Expenses.Web.Models.ExpenseItemViewData>
+﻿@model IEnumerable<Expenses.Web.Models.CategoryViewData>
 
 @{
-    ViewBag.Title = Strings.ExpenseItems;
+    ViewBag.Title = Strings.Categories;
 }
 
-<h2>@Strings.ExpenseItems</h2>
+<h2>@Strings.Categories</h2>
 
 <p>
-    @Html.ActionLink(@Strings.CreateNew, "Create")
+    @Html.ActionLink(Strings.CreateNew, "Create")
 </p>
 
 <table class="table">
@@ -19,7 +19,7 @@
             @Strings.Name
         </th>
         <th>
-            @Strings.Category
+            @Strings.Type
         </th>
         <th>
             @Strings.Comment
@@ -37,15 +37,15 @@
                 @Html.DisplayFor(items => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(items => item.ExpenseCategoryName)
+                @Html.DisplayFor(items => item.TypeName)
             </td>
             <td>
                 @Html.DisplayFor(items => item.Comment)
             </td>
             <td>
-                <a href="/ExpenseItem/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/ExpenseItem/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/ExpenseItem/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                <a href="/Category/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
+                <a href="/Category/Details/@item.Id"><img src="/Images/details.png"/></a> |
+                <a href="/Category/Delete/@item.Id"><img src="/Images/delete.png"/></a>
             </td>
         </tr>
     }

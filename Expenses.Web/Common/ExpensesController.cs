@@ -11,18 +11,13 @@ using System.Collections.Generic;
 namespace Expenses.Web
 {
     [CustomActionFilter]
-    public abstract class ExpensesController<TEntity, TView> : Controller where TEntity : Entity, new() where TView : Entity, new()
+    public abstract class ExpensesControllerBase<TEntity, TView> : Controller where TEntity : Entity, new() where TView : Entity, new()
     {
         private IExpensesService m_service;
 
         protected IExpensesService Service { get { return m_service ?? (m_service = Services.Get<IExpensesService> ()); } }
 
         protected virtual IEntityService<TView> EntityService { get { return new EntityViewService<TEntity,TView> (Service.GetEntityService<TEntity> ()); } }
-
-        public virtual ActionResult Index()
-        {
-            return View(FillUpViewItems(EntityService.Select()));
-        }
 
         public ActionResult Details(long? id)
         {
@@ -135,6 +130,14 @@ namespace Expenses.Web
 //                m_service.Dispose();
 //            base.Dispose(disposing);
 //        }
+    }
+
+    public abstract class ExpensesController<TEntity, TView> : ExpensesControllerBase<TEntity,TView> where TEntity : Entity, new() where TView : Entity, new()
+    {
+        public virtual ActionResult Index()
+        {
+            return View(FillUpViewItems(EntityService.Select()));
+        }
     }
 
     public class ExpensesController<TEntity> : ExpensesController<TEntity, TEntity> where TEntity : Entity, new()

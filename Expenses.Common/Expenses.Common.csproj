@@ -39,9 +39,6 @@
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Currency.cs" />
     <Compile Include="Entities\Entity.cs" />
-    <Compile Include="Entities\ExpenseCategory.cs" />
-    <Compile Include="Entities\ExpenseCategoryType.cs" />
-    <Compile Include="Entities\ExpenseItem.cs" />
     <Compile Include="Entities\IUnique.cs" />
     <Compile Include="Entities\Operation.cs" />
     <Compile Include="Entities\User.cs" />
@@ -51,6 +48,13 @@
     <Compile Include="Utils\IServiceProvider.cs" />
     <Compile Include="Service\CachedEntityService.cs" />
     <Compile Include="Service\ExpensesServiceHelper.cs" />
+    <Compile Include="Entities\Category.cs" />
+    <Compile Include="Entities\CategoryType.cs" />
+    <Compile Include="Entities\Subcategory.cs" />
+    <Compile Include="Utils\Parser.cs" />
+    <Compile Include="Service\StatsItem.cs" />
+    <Compile Include="Entities\Exchange.cs" />
+    <Compile Include="Entities\OperationBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

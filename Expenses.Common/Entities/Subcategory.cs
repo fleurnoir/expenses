@@ -2,9 +2,9 @@
 
 namespace Expenses.BL.Entities
 {
-    public class ExpenseItem : Entity
+    public class Subcategory : Entity
     {
-        public long ExpenseCategoryId { get; set; }
+        public long CategoryId { get; set; }
 
         public string Name { get; set; }
 
@@ -12,7 +12,7 @@ namespace Expenses.BL.Entities
         {
             if (String.IsNullOrEmpty (Name))
                 throw new ArgumentException ($"The field {nameof(Name)} cannot be empty");
-            if (ExpenseCategoryId <= 0)
+            if (CategoryId <= 0)
                 throw new ArgumentException ("Category not set");
         }
     }

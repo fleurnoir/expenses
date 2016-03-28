@@ -13,13 +13,17 @@ namespace Expenses.Web.Models
             Cloner.Clone (operation, this);
         }
 
-        public string ExpenseItemName { get; set; }
+        public string SubcategoryName { get; set; }
 
-        public long ExpenseCategoryId { get; set; }
+        public long CategoryId { get; set; }
 
-        public string ExpenseCategoryName { get; set; }
+        public string CategoryName { get; set; }
+
+        public CategoryType Type { get; set; }
 
         public string AccountName { get; set; }
+
+        public long CurrencyId { get; set; }
 
         public string CurrencyName { get; set; }
     }

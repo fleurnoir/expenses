@@ -130,18 +130,18 @@
     <Compile Include="Common\IAuthentication.cs" />
     <Compile Include="Common\ExpensesController.cs" />
     <Compile Include="Models\AccountViewData.cs" />
-    <Compile Include="Models\ExpenseViewData.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ExpenseCategoryController.cs" />
-    <Compile Include="Models\ExpenseCategoryViewData.cs" />
-    <Compile Include="Controllers\ExpenseItemController.cs" />
-    <Compile Include="Models\ExpenseItemViewData.cs" />
     <Compile Include="Models\OperationViewData.cs" />
     <Compile Include="Common\EntityViewService.cs" />
     <Compile Include="Controllers\OperationController.cs" />
     <Compile Include="Common\Strings.Designer.cs">
       <DependentUpon>Strings.resx</DependentUpon>
     </Compile>
+    <Compile Include="Controllers\CategoryController.cs" />
+    <Compile Include="Controllers\SubcategoryController.cs" />
+    <Compile Include="Models\CategoryViewData.cs" />
+    <Compile Include="Models\SubcategoryViewData.cs" />
+    <Compile Include="Models\StatsItem.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -188,16 +188,6 @@
     <Content Include="Views\Account\Details.cshtml" />
     <Content Include="Views\Account\Edit.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\ExpenseCategory\Create.cshtml" />
-    <Content Include="Views\ExpenseCategory\Delete.cshtml" />
-    <Content Include="Views\ExpenseCategory\Details.cshtml" />
-    <Content Include="Views\ExpenseCategory\Edit.cshtml" />
-    <Content Include="Views\ExpenseCategory\Index.cshtml" />
-    <Content Include="Views\ExpenseItem\Create.cshtml" />
-    <Content Include="Views\ExpenseItem\Delete.cshtml" />
-    <Content Include="Views\ExpenseItem\Details.cshtml" />
-    <Content Include="Views\ExpenseItem\Edit.cshtml" />
-    <Content Include="Views\ExpenseItem\Index.cshtml" />
     <Content Include="Views\Operation\Create.cshtml" />
     <Content Include="Views\Operation\Delete.cshtml" />
     <Content Include="Views\Operation\Details.cshtml" />
@@ -222,6 +212,16 @@
     <Content Include="Images\delete.png" />
     <Content Include="Images\edit.png" />
     <Content Include="Images\details.png" />
+    <Content Include="Views\Category\Create.cshtml" />
+    <Content Include="Views\Category\Delete.cshtml" />
+    <Content Include="Views\Category\Details.cshtml" />
+    <Content Include="Views\Category\Edit.cshtml" />
+    <Content Include="Views\Category\Index.cshtml" />
+    <Content Include="Views\Subcategory\Create.cshtml" />
+    <Content Include="Views\Subcategory\Delete.cshtml" />
+    <Content Include="Views\Subcategory\Details.cshtml" />
+    <Content Include="Views\Subcategory\Edit.cshtml" />
+    <Content Include="Views\Subcategory\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -229,9 +229,9 @@
     <Folder Include="Views\User\" />
     <Folder Include="Common\" />
     <Folder Include="Views\Account\" />
-    <Folder Include="Views\ExpenseCategory\" />
-    <Folder Include="Views\ExpenseItem\" />
     <Folder Include="Views\Operation\" />
+    <Folder Include="Views\Category\" />
+    <Folder Include="Views\Subcategory\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

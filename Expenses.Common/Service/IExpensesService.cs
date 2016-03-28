@@ -1,6 +1,7 @@
 ﻿using System;
 using Expenses.BL.Entities;
 using System.Collections.Generic;
+using Expenses.Common.Service;
 
 namespace Expenses.BL.Service
 {
@@ -12,19 +13,20 @@ namespace Expenses.BL.Service
         Operation UpdateOperation(Operation operation);
         void DeleteOperation(long operationId);
         Operation GetOperation(long operationId);
-        IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? expenseItemId, long? expenseCategoryId);
+        IList<Operation> GetOperations (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
+        IList<StatsItem> GetStatistics (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
 
-        ExpenseItem AddExpenseItem(ExpenseItem expense);
-        ExpenseItem UpdateExpenseItem(ExpenseItem expense);
-        void DeleteExpenseItem(long expenseId);
-        ExpenseItem GetExpenseItem(long expenseId);
-        IList<ExpenseItem> GetExpenseItems(long? expenseCategoryId = null);
+        Subcategory AddSubcategory(Subcategory expense);
+        Subcategory UpdateSubcategory(Subcategory expense);
+        void DeleteSubcategory(long expenseId);
+        Subcategory GetSubcategory(long expenseId);
+        IList<Subcategory> GetSubcategories(long? categoryId = null);
 
-        ExpenseCategory AddCategory(ExpenseCategory category);
-        ExpenseCategory UpdateCategory(ExpenseCategory category);
+        Category AddCategory(Category category);
+        Category UpdateCategory(Category category);
         void DeleteCategory(long categoryId);
-        ExpenseCategory GetCategory(long categoryId);
-        IList<ExpenseCategory> GetCategories (ExpenseCategoryType? categoryType = null);
+        Category GetCategory(long categoryId);
+        IList<Category> GetCategories (CategoryType? categoryType = null);
 
         Currency AddCurrency(Currency currency);
         Currency UpdateCurrency(Currency currency);

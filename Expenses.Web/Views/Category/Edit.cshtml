@@ -1,4 +1,4 @@
-﻿@model Expenses.Web.Models.ExpenseItemViewData
+﻿@model Expenses.Web.Models.CategoryViewData
 
 @{
     ViewBag.Title = Strings.Edit;
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>@Strings.ExpenseItem</h4>
+        <h4>@Strings.Category</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.Id)
@@ -33,10 +33,10 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="ExpenseCategoryId">@Strings.Category</label>
+            <label class="control-label col-md-2" for="Type">@Strings.Type</label>
             <div class="col-md-10">
-                @Html.DropDownList("ExpenseCategoryId", null, htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.ExpenseCategoryId, "", new { @class = "text-danger" })
+                @Html.DropDownList("Type", null, htmlAttributes: new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.Type, "", new { @class = "text-danger" })
             </div>
         </div>
 

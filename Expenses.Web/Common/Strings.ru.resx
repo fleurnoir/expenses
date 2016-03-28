@@ -20,10 +20,8 @@
     <data name="Currencies"><value>Валюты</value></data>
     <data name="Category"><value>Категория</value></data>
     <data name="Categories"><value>Категории</value></data>
-    <data name="ExpenseCategories"><value>Категории расходов</value></data>
-    <data name="Item"><value>Пункт</value></data>
-    <data name="ExpenseItem"><value>Пункт расходов</value></data>
-    <data name="ExpenseItems"><value>Пункты расходов</value></data>
+    <data name="Subcategory"><value>Подкатегория</value></data>
+    <data name="Subcategories"><value>Подкатегории</value></data>
     <data name="Create"><value>Создать</value></data>
     <data name="CreateNew"><value>Добавить</value></data>
     <data name="Logout"><value>Выйти</value></data>
@@ -34,7 +32,7 @@
     <data name="Password"><value>Пароль</value></data>
     <data name="NewRecord"><value>Новая запись</value></data>
     <data name="NewCategory"><value>Новая категория</value></data>
-    <data name="NewExpenseItem"><value>Новый пункт расходов</value></data>
+    <data name="NewSubcategory"><value>Новый подкатегория</value></data>
     <data name="Comment"><value>Примечание</value></data>
     <data name="BackToList"><value>Назад к списку</value></data>
     <data name="Cancel"><value>Отмена</value></data>
@@ -47,4 +45,13 @@
     <data name="Expense"><value>Расход</value></data>
     <data name="Income"><value>Доход</value></data>
     <data name="ShortName"><value>Сокращенно</value></data>
+    <data name="StartDate"><value>Начальная дата</value></data>
+    <data name="EndDate"><value>Конечная дата</value></data>
+    <data name="JsDateFormat"><value>dd.mm.yy</value></data>
+    <data name="CsDateFormat"><value>dd.MM.yyyy</value></data>
+    <data name="Apply"><value>Применить</value></data>
+    <data name="All"><value>Все</value></data>
+    <data name="ChooseCategory"><value>Выберите категорию</value></data>
+    <data name="ShowFilter"><value>Показать фильтр</value></data>
+    <data name="HideFilter"><value>Скрыть фильтр</value></data>
 </root>

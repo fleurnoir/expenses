@@ -1,14 +1,13 @@
-﻿@model Expenses.Web.Models.ExpenseItemViewData
+﻿@model Expenses.Web.Models.CategoryViewData
 
 @{
-    ViewBag.Title = Strings.Delete;
+    ViewBag.Title = Strings.Details;
 }
 
-<h2>@Strings.Delete</h2>
+<h2>@Strings.Details</h2>
 
-<h3>@Strings.RecordDeleteConfirmation</h3>
 <div>
-    <h4>@Strings.ExpenseItem</h4>
+    <h4>@Strings.Category</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
@@ -28,11 +27,11 @@
         </dd>
 
         <dt>
-            @Strings.Category
+            @Strings.Type
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.ExpenseCategoryName)
+            @Html.DisplayFor(model => model.TypeName)
         </dd>
 
         <dt>
@@ -44,13 +43,8 @@
         </dd>
 
     </dl>
-
-    @using (Html.BeginForm()) {
-        @Html.AntiForgeryToken()
-
-        <div class="form-actions no-color">
-            <input type="submit" value="@Strings.Delete" class="btn btn-default" /> |
-            @Html.ActionLink(Strings.BackToList, "Index")
-        </div>
-    }
 </div>
+<p>
+    @Html.ActionLink(Strings.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Strings.BackToList, "Index")
+</p>

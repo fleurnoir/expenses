@@ -42,13 +42,13 @@ namespace Expenses.BL.Service
         {
             var account = context.Accounts.Find (operation.AccountId);
             var type = 
-                (from ei in context.ExpenseItems
-                    join ec in context.ExpenseCategories on ei.ExpenseCategoryId equals ec.Id
-                    where ei.Id == operation.ExpenseItemId
+                (from ei in context.Subcategories
+                    join ec in context.Categories on ei.CategoryId equals ec.Id
+                    where ei.Id == operation.SubcategoryId
                     select ec.Type).First ();
             var accountAmount = Math.Round (account.Amount, 2);
             var operationAmount = Math.Round (operation.Amount, 2);
-            var sign1 = type == ExpenseCategoryType.Income ? 1.0 : -1.0;
+            var sign1 = type == CategoryType.Income ? 1.0 : -1.0;
             var sign2 = backwards ? -1.0 : 1.0;
             operation.Amount = operationAmount;
             account.Amount = accountAmount + sign1 * sign2 * operationAmount;

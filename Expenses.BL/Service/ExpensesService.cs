@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Collections.Generic;
 using Expenses.Common.Utils;
+using Expenses.Common.Service;
 
 namespace Expenses.BL.Service
 {
@@ -19,8 +20,8 @@ namespace Expenses.BL.Service
         {
             RegisterFactory<Currency> ();
             RegisterFactory<Account> ();
-            RegisterFactory<ExpenseItem> ();
-            RegisterFactory<ExpenseCategory> ();
+            RegisterFactory<Subcategory> ();
+            RegisterFactory<Category> ((provider,userId)=>new CategoriesService(provider));
             RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));
         }
 
@@ -67,15 +68,15 @@ namespace Expenses.BL.Service
         public void DeleteOperation (long operationId) => Delete<Operation>(operationId);
         public Operation GetOperation (long operationId) => Select<Operation>(operationId);
 
-        public ExpenseItem AddExpenseItem (ExpenseItem expense) => Add(expense);
-        public ExpenseItem UpdateExpenseItem (ExpenseItem expense) => Update(expense);
-        public void DeleteExpenseItem (long expenseId) => Delete<ExpenseItem>(expenseId);
-        public ExpenseItem GetExpenseItem (long expenseId) => Select<ExpenseItem>(expenseId);
+        public Subcategory AddSubcategory (Subcategory expense) => Add(expense);
+        public Subcategory UpdateSubcategory (Subcategory expense) => Update(expense);
+        public void DeleteSubcategory (long expenseId) => Delete<Subcategory>(expenseId);
+        public Subcategory GetSubcategory (long expenseId) => Select<Subcategory>(expenseId);
 
-        public ExpenseCategory AddCategory (ExpenseCategory category) => Add(category);
-        public ExpenseCategory UpdateCategory (ExpenseCategory category) => Update(category);
-        public void DeleteCategory (long categoryId) => Delete<ExpenseCategory>(categoryId);
-        public ExpenseCategory GetCategory (long categoryId) => Select<ExpenseCategory>(categoryId);
+        public Category AddCategory (Category category) => Add(category);
+        public Category UpdateCategory (Category category) => Update(category);
+        public void DeleteCategory (long categoryId) => Delete<Category>(categoryId);
+        public Category GetCategory (long categoryId) => Select<Category>(categoryId);
 
         public Currency AddCurrency(Currency currency) => Add(currency);
         public Currency UpdateCurrency(Currency currency) => Update(currency);
@@ -87,28 +88,76 @@ namespace Expenses.BL.Service
         public void DeleteAccount(long accountId) => Delete<Account>(accountId);
         public Account GetAccount(long accountId) => Select<Account>(accountId);
 
-        public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? expenseItemId, long? expenseCategoryId)
+        public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
-            throw new NotImplementedException ();
+            using (var db = CreateContext ())
+                return GetQuery (db, startTime, endTime, subcategoryId, categoryId).OrderByDescending (item => item.Id).ToList ();        
         }
 
-        public IList<ExpenseItem> GetExpenseItems (long? categoryId = null)
+        private static IQueryable<Operation> GetQuery (ExpensesContext db, DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
-            using (var context = m_provider.CreateContext ()) {
-                IQueryable<ExpenseItem> query = context.ExpenseItems;
+            IQueryable<Operation> query = db.Operations;
+            if (categoryId != null) {
+                query = from op in db.Operations
+                join sub in db.Subcategories on op.SubcategoryId equals sub.Id
+                where sub.CategoryId == categoryId
+                select op;
+            }
+            if (subcategoryId != null)
+                query = query.Where (op => op.SubcategoryId == subcategoryId);
+            if (startTime != null)
+                query = query.Where (op => op.OperationTime >= startTime);
+            if (endTime != null)
+                query = query.Where (op => op.OperationTime <= endTime);
+            return query;
+        }
+
+        public IList<StatsItem> GetStatistics (DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), long? subcategoryId = default(long?), long? categoryId = default(long?))
+        {
+            using (var db = CreateContext ())
+            {
+                var query = 
+                    from op in db.Operations
+                    join sub in db.Subcategories on op.SubcategoryId equals sub.Id
+                    join cat in db.Categories on sub.CategoryId equals cat.Id
+                    join acc in db.Accounts on op.AccountId equals acc.Id
+                    select new {op, sub, cat, acc};
+
                 if (categoryId != null)
-                    query = query.Where (c => c.ExpenseCategoryId == (long)categoryId);
-                return query.ToList ();
+                    query = query.Where (i => i.cat.Id == categoryId);
+                if (subcategoryId != null)
+                    query = query.Where (i => i.sub.Id == subcategoryId);
+                if (startTime != null)
+                    query = query.Where (i => i.op.OperationTime >= startTime);
+                if (endTime != null)
+                    query = query.Where (i => i.op.OperationTime <= endTime);
+
+                return query.GroupBy (i => new {i.acc.CurrencyId, i.cat.Type})
+                    .Select (g => new StatsItem {
+                    CurrencyId = g.Key.CurrencyId,
+                    Type = g.Key.Type,
+                    Amount = g.Sum (i => i.op.Amount)
+                    }).ToList();
             }
         }
 
-        public IList<ExpenseCategory> GetCategories (ExpenseCategoryType? categoryType = null)
+        public IList<Subcategory> GetSubcategories (long? categoryId = null)
         {
             using (var context = m_provider.CreateContext ()) {
-                IQueryable<ExpenseCategory> query = context.ExpenseCategories;
+                IQueryable<Subcategory> query = context.Subcategories;
+                if (categoryId != null)
+                    query = query.Where (c => c.CategoryId == (long)categoryId);
+                return query.OrderBy(c=>c.Name).ToList ();
+            }
+        }
+
+        public IList<Category> GetCategories (CategoryType? categoryType = null)
+        {
+            using (var context = m_provider.CreateContext ()) {
+                IQueryable<Category> query = context.Categories;
                 if (categoryType != null)
-                    query = query.Where (c => c.Type == (ExpenseCategoryType)categoryType);
-                return query.ToList ();
+                    query = query.Where (c => c.Type == (CategoryType)categoryType);
+                return query.OrderBy(c=>c.Name).ToList ();
             }
         }
 

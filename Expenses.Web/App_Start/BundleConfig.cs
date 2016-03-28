@@ -33,6 +33,10 @@ namespace Expenses.Web
             bundles.Add (new StyleBundle ("~/Content/jquery-ui").Include (
                 "~/Content/jquery-ui.css"
             ));
+
+            bundles.Add (new StyleBundle ("~/Content/pagedlist").Include (
+                "~/Content/PagedList.css"
+            ));
                 
 
             // Set EnableOptimizations to false for debugging. For more information,
