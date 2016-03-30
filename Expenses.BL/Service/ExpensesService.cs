@@ -19,7 +19,7 @@ namespace Expenses.BL.Service
         static ExpensesService()
         {
             RegisterFactory<Currency> ();
-            RegisterFactory<Account> ();
+            RegisterFactory<Account> ((provider,userId)=>new AccountsService(provider));
             RegisterFactory<Subcategory> ();
             RegisterFactory<Category> ((provider,userId)=>new CategoriesService(provider));
             RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));

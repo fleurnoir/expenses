@@ -82,11 +82,17 @@
             "#DestAccountId" : @ViewBag.DestCurrencyId
         }; 
 
+        var destAmount;
         var updateEditors = function() {
-            if(currencies["#SourceAccountId"] == currencies["#DestAccountId"])
+            var $el = $("#DestAmount");
+            if(currencies["#SourceAccountId"] == currencies["#DestAccountId"]) {
                 $("#DestAmountGroup").hide();
-            else
+                destAmount = $el.val();
+                $el.val("0");
+            } else {
+                $el.val(destAmount);
                 $("#DestAmountGroup").show();
+            }
         };
 
         var onAccountChange = function(e) {

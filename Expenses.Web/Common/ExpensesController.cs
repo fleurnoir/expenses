@@ -62,10 +62,9 @@ namespace Expenses.Web
                     return RedirectToAction("Index");
                 }
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (Exception e)
             {
-                //Log the error (uncomment dex variable name and add a line here to write a log.)
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                ModelState.AddModelError(String.Empty, e.Message);
             }
             return View(item);
         }
@@ -100,9 +99,9 @@ namespace Expenses.Web
                 EntityService.Update(item);
                 return RedirectToAction("Index");
             }
-            catch (RetryLimitExceededException /* dex */)
+            catch (Exception e)
             {
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists, see your system administrator.");
+                ModelState.AddModelError(String.Empty, e.Message);
             }
             return View(item);
         }
@@ -125,7 +124,13 @@ namespace Expenses.Web
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(long id)
         {
-            EntityService.Delete(id);
+            try {
+                EntityService.Delete(id);
+            }
+            catch(Exception e) {
+                ModelState.AddModelError (String.Empty, e.Message);
+                return Delete(id);
+            }
             return RedirectToAction("Index");
         }
 

@@ -53,6 +53,7 @@
     <None Include="createdb.sql" />
     <None Include="test.sqlite" />
     <None Include="App.config" />
+    <None Include="clean.sqlite" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Expenses.BL\Expenses.BL.csproj">
