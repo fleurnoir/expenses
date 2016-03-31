@@ -45,6 +45,9 @@ namespace Expenses.BL.Service
         void DeleteAccount(long accountId);
         Account GetAccount(long accountId);
         IList<Account> GetAccounts ();
+
+        string GetValue (string key);
+        void StoreValue (string key, string value);
     }
 }
 

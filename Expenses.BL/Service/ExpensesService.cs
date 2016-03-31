@@ -123,6 +123,33 @@ namespace Expenses.BL.Service
         public IList<Currency> GetCurrencies () => Select<Currency>();
         public IList<Account> GetAccounts () => Select<Account>();
 
+        public string GetValue (string key){
+            using (var db = CreateContext ()) {
+                return db.KeyValuePairs.FirstOrDefault (item => item.Key == key)?.Value;
+            }
+        }
+
+        public void StoreValue (string key, string value){
+            if (key == null)
+                throw new ArgumentNullException (nameof(key));
+            using (var db = CreateContext ()) {
+                var record = db.KeyValuePairs.FirstOrDefault (item => item.Key == key);
+                if (value == null) {
+                    if (record != null) {
+                        db.KeyValuePairs.Remove (record);
+                        db.SaveChanges ();
+                    }
+                } else {
+                    if (record == null) {
+                        record = new KeyValuePair { Key = key, Value = value };
+                        db.KeyValuePairs.Add (record);
+                    } else
+                        record.Value = value;
+                    db.SaveChanges ();
+                }
+            }
+        }
+
         void IDisposable.Dispose ()
         {
         }

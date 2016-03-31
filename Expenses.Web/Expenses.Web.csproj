@@ -145,6 +145,7 @@
     <Compile Include="Models\ExchangeViewData.cs" />
     <Compile Include="Controllers\ExchangeController.cs" />
     <Compile Include="Common\DoubleModelBinder.cs" />
+    <Compile Include="Common\DefaultsHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />

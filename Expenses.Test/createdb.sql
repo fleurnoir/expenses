@@ -65,3 +65,9 @@ CREATE TABLE "Operations" (
     FOREIGN KEY(`AccountId`) REFERENCES Accounts ( Id ),
     FOREIGN KEY(`SubcategoryId`) REFERENCES Subcategories ( Id )
 );
+
+CREATE TABLE `KeyValuePairs` (
+    `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `Key`   TEXT NOT NULL UNIQUE,
+    `Value` TEXT
+);

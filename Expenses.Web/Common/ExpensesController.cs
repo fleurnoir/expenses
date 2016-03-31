@@ -48,6 +48,9 @@ namespace Expenses.Web
         protected virtual void OnSaving(TView item){
         }
 
+        protected virtual void OnSaved(TView item){
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public virtual ActionResult Create(TView item)
@@ -59,6 +62,7 @@ namespace Expenses.Web
                 {
                     OnSaving(item);
                     EntityService.Add (item);
+                    OnSaved(item);
                     return RedirectToAction("Index");
                 }
             }
@@ -97,6 +101,7 @@ namespace Expenses.Web
             {
                 OnSaving(item);
                 EntityService.Update(item);
+                OnSaved(item);
                 return RedirectToAction("Index");
             }
             catch (Exception e)

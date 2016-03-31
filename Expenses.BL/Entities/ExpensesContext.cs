@@ -16,6 +16,7 @@ namespace Expenses.BL.Entities
         public DbSet<Exchange> Exchanges { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Currency> Currencies { get; set; }
+        public DbSet<KeyValuePair> KeyValuePairs { get; set; } 
     }
 }
 

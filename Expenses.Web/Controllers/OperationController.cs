@@ -18,7 +18,10 @@ namespace Expenses.Web.Controllers
         public ActionResult Index(string dateFrom, string dateTo, long? categoryId, long? subcategoryId, int? page)
         {
             var format = "yyyy-MM-dd";
-            ViewBag.CategoryId = new SelectList (new[] {new Category{Id = 0, Name=Strings.All}}.Concat(Service.GetCategories()), nameof (Category.Id), nameof (Category.Name), categoryId ?? 0);
+            ViewBag.CategoryId = new SelectList (
+                new[] {new Category{Id = 0, Name=Strings.All}}.Concat(Service.GetCategories()), 
+                nameof (Category.Id), nameof (Category.Name), 
+                categoryId ?? 0);
             if (categoryId == 0)
                 categoryId = null;
             if (subcategoryId == 0)
@@ -38,6 +41,22 @@ namespace Expenses.Web.Controllers
                 ViewBag.Expense = expense;
             
             return View(items.ToPagedList(page ?? 1, 20));
+        }
+
+        private void SaveDefaults(OperationViewData item) {
+            if (item.CategoryId > 0) {
+                Service.SetDefaultId<Category> (item.CategoryId);
+                if (item.SubcategoryId > 0)
+                    Service.SetDefaultSubcategoryId (item.CategoryId, item.SubcategoryId);
+            }
+            if (item.AccountId > 0)
+                Service.SetDefaultId<Account> (item.AccountId);
+        }
+
+        protected override void OnSaved (OperationViewData item)
+        {
+            base.OnSaved (item);
+            SaveDefaults (item);
         }
 
         private IList<StatsItemViewData> GetStatistics(DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
@@ -102,7 +121,7 @@ namespace Expenses.Web.Controllers
 
             long categoryId;
             if (entity.SubcategoryId <= 0 && entity.CategoryId <= 0) {
-                categoryId = (categories.FirstOrDefault (item => item.Type == CategoryType.Expense)?.Id).GetValueOrDefault();
+                categoryId = Service.GetDefaultId<Category>() ?? (categories.FirstOrDefault (item => item.Type == CategoryType.Expense)?.Id).GetValueOrDefault();
             } else if (entity.CategoryId <= 0 && entity.SubcategoryId > 0) {
                 categoryId = Service.GetSubcategory (entity.SubcategoryId).CategoryId;
             } else
@@ -110,11 +129,12 @@ namespace Expenses.Web.Controllers
 
             var subcategories = Service.GetSubcategories (categoryId > 0 ? (long?)categoryId : null);
 
-            long subcategoryId = entity.SubcategoryId;
+            long subcategoryId = entity.SubcategoryId > 0 ? entity.SubcategoryId : Service.GetDefaultSubcategoryId(categoryId).GetValueOrDefault();
             if (subcategoryId <= 0 || !subcategories.Any (item => item.Id == subcategoryId))
                 subcategoryId = (subcategories.FirstOrDefault ()?.Id).GetValueOrDefault();
                     
-            long accountId = entity.AccountId > 0 ? entity.AccountId : (accounts.FirstOrDefault ()?.Id).GetValueOrDefault();
+            long accountId = entity.AccountId > 0 ? entity.AccountId : 
+                Service.GetDefaultId<Account>() ?? (accounts.FirstOrDefault ()?.Id).GetValueOrDefault();
 
             ViewBag.AccountId = new SelectList (accounts, nameof (Account.Id), nameof (Account.Name), accountId);
             ViewBag.SubcategoryId = new SelectList (subcategories, nameof(Subcategory.Id), nameof(Subcategory.Name), subcategoryId);
