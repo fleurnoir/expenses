@@ -16,6 +16,19 @@ namespace Expenses.BL.Service
                 return db.Categories.OrderBy(c=>c.Name).ToList();
         }
 
+        public override Category Update (Category item)
+        {
+            using (var db = CreateContext ()) {
+                var category = db.Categories.Find (item.Id);
+
+                // Only Name and Comment fields can be edited
+                category.Name = item.Name;
+                category.Comment = item.Comment;
+                db.SaveChanges ();
+                return category;
+            }
+        }
+
         public IList<Category> Select (CategoryType? categoryType)
         {
             using (var context = CreateContext ()) {
