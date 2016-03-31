@@ -27,6 +27,11 @@ namespace Expenses.Web
             Services.Register<IMvcActionFilter> (authentication);
             Services.Register<IAuthentication> (authentication);
             Services.RegisterProvider<IExpensesService>(authentication);
+
+            ModelBinders.Binders.Add(typeof(double), new DoubleModelBinder());
+            ModelBinders.Binders.Add(typeof(double?), new DoubleModelBinder());
+
+
         }
     }
 }

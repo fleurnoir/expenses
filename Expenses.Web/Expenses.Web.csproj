@@ -144,6 +144,7 @@
     <Compile Include="Models\StatsItem.cs" />
     <Compile Include="Models\ExchangeViewData.cs" />
     <Compile Include="Controllers\ExchangeController.cs" />
+    <Compile Include="Common\DoubleModelBinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -229,6 +230,7 @@
     <Content Include="Views\Exchange\Details.cshtml" />
     <Content Include="Views\Exchange\Edit.cshtml" />
     <Content Include="Views\Exchange\Index.cshtml" />
+    <Content Include="Scripts\jquery.fix.validate.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

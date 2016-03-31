@@ -100,9 +100,9 @@ namespace Expenses.Test
             if (result != null)
                 return result;
             var cat = GetCategory(db, category, categories);
-            result = db.Subcategories.FirstOrDefault (item=>item.Name == name && item.ExpenseCategoryId == cat.Id);
+            result = db.Subcategories.FirstOrDefault (item=>item.Name == name && item.CategoryId == cat.Id);
             if (result == null) {
-                result = db.Subcategories.Add (new Subcategory{ Name = name, ExpenseCategoryId = cat.Id });
+                result = db.Subcategories.Add (new Subcategory{ Name = name, CategoryId = cat.Id });
                 db.SaveChanges ();
             }
             subcategories.Add (fullname, result);
