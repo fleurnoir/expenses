@@ -111,6 +111,17 @@ namespace Expenses.Web.Controllers
             return FillUpViewItem(item, new EntityStorage(Service));
         }
 
+        private long ChooseDefaultValue<TEntity>(long selected, Func<long?> getRecentlySelected, ICollection<TEntity> available) 
+            where TEntity : Entity 
+        {
+            if (selected > 0 && available.Any (item => item.Id == selected))
+                return selected;
+            var recentlySelected = getRecentlySelected () ?? 0;
+            if (recentlySelected > 0 && available.Any (item => item.Id == recentlySelected))
+                return recentlySelected;
+            return available.FirstOrDefault ()?.Id ?? 0;
+        }
+
         protected override void PopulateSelectLists (OperationViewData entity)
         {
             if (entity == null)
@@ -119,22 +130,13 @@ namespace Expenses.Web.Controllers
             var accounts = Service.GetAccounts ();
             var categories = Service.GetCategories ();
 
-            long categoryId;
-            if (entity.SubcategoryId <= 0 && entity.CategoryId <= 0) {
-                categoryId = Service.GetDefaultId<Category>() ?? (categories.FirstOrDefault (item => item.Type == CategoryType.Expense)?.Id).GetValueOrDefault();
-            } else if (entity.CategoryId <= 0 && entity.SubcategoryId > 0) {
-                categoryId = Service.GetSubcategory (entity.SubcategoryId).CategoryId;
-            } else
-                categoryId = entity.CategoryId;
+            long categoryId = ChooseDefaultValue(entity.CategoryId, ()=>Service.GetDefaultId<Category>(), categories);
 
             var subcategories = Service.GetSubcategories (categoryId > 0 ? (long?)categoryId : null);
 
-            long subcategoryId = entity.SubcategoryId > 0 ? entity.SubcategoryId : Service.GetDefaultSubcategoryId(categoryId).GetValueOrDefault();
-            if (subcategoryId <= 0 || !subcategories.Any (item => item.Id == subcategoryId))
-                subcategoryId = (subcategories.FirstOrDefault ()?.Id).GetValueOrDefault();
+            long subcategoryId = ChooseDefaultValue(entity.SubcategoryId, ()=>Service.GetDefaultSubcategoryId(categoryId), subcategories);
                     
-            long accountId = entity.AccountId > 0 ? entity.AccountId : 
-                Service.GetDefaultId<Account>() ?? (accounts.FirstOrDefault ()?.Id).GetValueOrDefault();
+            long accountId = ChooseDefaultValue(entity.AccountId, ()=>Service.GetDefaultId<Account>(), accounts);
 
             ViewBag.AccountId = new SelectList (accounts, nameof (Account.Id), nameof (Account.Name), accountId);
             ViewBag.SubcategoryId = new SelectList (subcategories, nameof(Subcategory.Id), nameof(Subcategory.Name), subcategoryId);
