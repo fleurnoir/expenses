@@ -27,6 +27,7 @@ namespace Expenses.BL.Service
         void DeleteSubcategory(long expenseId);
         Subcategory GetSubcategory(long expenseId);
         IList<Subcategory> GetSubcategories(long? categoryId = null);
+        CategoryType GetCategoryType (long subcategoryId);
 
         Category AddCategory(Category category);
         Category UpdateCategory(Category category);

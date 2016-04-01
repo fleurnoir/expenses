@@ -28,7 +28,10 @@ namespace Expenses.Web.Controllers
 
         protected override void PopulateSelectLists (SubcategoryViewData item)
         {
-            var categories = Service.GetCategories (null);
+            var type = item == null || item.CategoryId <= 0 ? 
+                (CategoryType?)null : 
+                Service.GetCategory (item.CategoryId).Type;
+            var categories = Service.GetCategories (type);
             ViewBag.CategoryId = new SelectList (categories, nameof(Category.Id), nameof(Category.Name), item?.CategoryId ?? categories.FirstOrDefault()?.Id);
         }
     }

@@ -20,7 +20,7 @@ namespace Expenses.BL.Service
         {
             RegisterFactory<Currency> ();
             RegisterFactory<Account> ((provider,userId)=>new AccountsService(provider));
-            RegisterFactory<Subcategory> ();
+            RegisterFactory<Subcategory> ((provider,userId)=>new SubcategoriesService(provider));
             RegisterFactory<Category> ((provider,userId)=>new CategoriesService(provider));
             RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));
             RegisterFactory<Exchange> ((provider,userId)=>new ExchangesService(provider, userId));
@@ -79,6 +79,9 @@ namespace Expenses.BL.Service
         public Subcategory UpdateSubcategory (Subcategory expense) => Update(expense);
         public void DeleteSubcategory (long expenseId) => Delete<Subcategory>(expenseId);
         public Subcategory GetSubcategory (long expenseId) => Select<Subcategory>(expenseId);
+        public CategoryType GetCategoryType (long subcategoryId) {
+            return ((SubcategoriesService)GetEntityService<Subcategory> ()).GetCategoryType (subcategoryId);
+        }
 
         public Category AddCategory (Category category) => Add(category);
         public Category UpdateCategory (Category category) => Update(category);

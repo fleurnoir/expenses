@@ -18,6 +18,9 @@ namespace Expenses.BL.Service
 
         public override Category Update (Category item)
         {
+            if (item == null)
+                throw new ArgumentNullException (nameof(item));
+            item.CheckFields ();
             using (var db = CreateContext ()) {
                 var category = db.Categories.Find (item.Id);
 

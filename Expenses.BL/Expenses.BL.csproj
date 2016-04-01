@@ -51,6 +51,7 @@
     <Compile Include="Service\ExchangesService.cs" />
     <Compile Include="Service\AccountsService.cs" />
     <Compile Include="Entities\KeyValuePair.cs" />
+    <Compile Include="Service\SubcategoriesService.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
