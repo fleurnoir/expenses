@@ -1,0 +1,85 @@
+﻿@model Expenses.Web.Models.DebtViewData
+
+@{
+    ViewBag.Title = Strings.Details;
+}
+
+<h2>@Strings.Details</h2>
+
+<div>
+    <h4>@Strings.Debt</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Id)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Id)
+        </dd>
+
+        <dt>
+            @Strings.Name
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AgentName)
+        </dd>
+
+        <dt>
+            @Strings.Type
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TypeName)
+        </dd>
+
+        <dt>
+            @Strings.Account
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AccountName)
+        </dd>
+
+        <dt>
+            @Strings.Amount
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Amount)
+            @(" " + Model.CurrencyName)
+        </dd>
+
+        <dt>
+            @Strings.Repayed
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RepayedAmount)
+            @(" " + Model.CurrencyName)
+        </dd>
+
+        <dt>
+            @Strings.Rest
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RestAmount)
+            @(" " + Model.CurrencyName)
+        </dd>
+
+        <dt>
+            @Strings.Comment
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Comment)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink(Strings.Edit, "Edit", new { id = Model.Id }) |
+    @Html.ActionLink(Strings.BackToList, "Index")
+</p>

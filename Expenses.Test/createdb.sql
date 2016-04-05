@@ -71,3 +71,29 @@ CREATE TABLE `KeyValuePairs` (
     `Key`   TEXT NOT NULL UNIQUE,
     `Value` TEXT
 );
+
+CREATE TABLE "Debts" (
+    `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `AgentName` TEXT NOT NULL,
+    `AccountId` INTEGER NOT NULL,
+    `Comment`   TEXT,
+    `Amount`    REAL NOT NULL,
+    `RepayedAmount` REAL NOT NULL,
+    `UserId`    INTEGER NOT NULL,
+    `OperationTime` REAL NOT NULL,
+    `Type`  INTEGER NOT NULL,
+    `Repayed`   INTEGER NOT NULL,
+    FOREIGN KEY(`AccountId`) REFERENCES Accounts ( Id ),
+    FOREIGN KEY(`UserId`) REFERENCES Users ( Id )
+);
+
+CREATE TABLE `Repayments` (
+    `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `Comment`   TEXT,
+    `UserId`    INTEGER NOT NULL,
+    `OperationTime` REAL NOT NULL,
+    `DebtId`    INTEGER NOT NULL,
+    `Amount`    REAL NOT NULL,
+    FOREIGN KEY(`UserId`) REFERENCES Users(Id),
+    FOREIGN KEY(`DebtId`) REFERENCES Debts(Id)
+);

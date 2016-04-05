@@ -10,7 +10,7 @@ namespace Expenses.Web.Controllers
 {
     public class CategoryController : ExpensesController<Category, CategoryViewData>
     {
-        private static IDictionary<OperationType, string> m_categoryNames = new Dictionary<OperationType, string>
+        private static IDictionary<OperationType, string> m_typeNames = new Dictionary<OperationType, string>
         {
             {OperationType.Expense, Strings.Expense},
             {OperationType.Income, Strings.Income}
@@ -20,20 +20,20 @@ namespace Expenses.Web.Controllers
         {
             return items.Select (
                 item => { 
-                    item.TypeName = m_categoryNames.SafeGet(item.Type);
+                    item.TypeName = m_typeNames.SafeGet(item.Type);
                     return item;
                 });
         }
 
         protected override CategoryViewData FillUpViewItem (CategoryViewData item)
         {
-            item.TypeName = m_categoryNames.SafeGet (item.Type);
+            item.TypeName = m_typeNames.SafeGet (item.Type);
             return item;
         }
 
         protected override void PopulateSelectLists (CategoryViewData category)
         {
-            ViewBag.Type = new SelectList (m_categoryNames, nameof(KeyValuePair<int,int>.Key), nameof(KeyValuePair<int,int>.Value), category?.Type ?? OperationType.Expense);
+            ViewBag.Type = new SelectList (m_typeNames, nameof(KeyValuePair<int,int>.Key), nameof(KeyValuePair<int,int>.Value), category?.Type ?? OperationType.Expense);
         }
     }
 }

@@ -58,4 +58,10 @@
     <data name="FromAccount"><value>Со счета</value></data>
     <data name="ToAccount"><value>На счет</value></data>
     <data name="ResultAmount"><value>Результ. сумма</value></data>
+    <data name="Debts"><value>Долги</value></data>
+    <data name="Debt"><value>Долг</value></data>
+    <data name="Repayed"><value>Возвращено</value></data>
+    <data name="IOwe"><value>Я должен</value></data>
+    <data name="OwedToMe"><value>Мне должны</value></data>
+    <data name="Rest"><value>Остаток</value></data>
 </root>

@@ -321,5 +321,41 @@ namespace Expenses.Web {
                 return ResourceManager.GetString("ResultAmount", resourceCulture);
             }
         }
+        
+        public static string Debts {
+            get {
+                return ResourceManager.GetString("Debts", resourceCulture);
+            }
+        }
+        
+        public static string Debt {
+            get {
+                return ResourceManager.GetString("Debt", resourceCulture);
+            }
+        }
+        
+        public static string Repayed {
+            get {
+                return ResourceManager.GetString("Repayed", resourceCulture);
+            }
+        }
+        
+        public static string IOwe {
+            get {
+                return ResourceManager.GetString("IOwe", resourceCulture);
+            }
+        }
+        
+        public static string OwedToMe {
+            get {
+                return ResourceManager.GetString("OwedToMe", resourceCulture);
+            }
+        }
+        
+        public static string Rest {
+            get {
+                return ResourceManager.GetString("Rest", resourceCulture);
+            }
+        }
     }
 }

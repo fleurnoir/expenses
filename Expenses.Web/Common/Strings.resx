@@ -58,4 +58,10 @@
     <data name="FromAccount"><value>From Account</value></data>
     <data name="ToAccount"><value>To Account</value></data>
     <data name="ResultAmount"><value>Result Amount</value></data>
+    <data name="Debts"><value>Debts</value></data>
+    <data name="Debt"><value>Debt</value></data>
+    <data name="Repayed"><value>Repayed</value></data>
+    <data name="IOwe"><value>I owe</value></data>
+    <data name="OwedToMe"><value>Owed to me</value></data>
+    <data name="Rest"><value>Rest</value></data>
 </root>

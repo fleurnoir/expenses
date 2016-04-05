@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Expenses.Web.Models.DebtViewData>
+
+@{
+    ViewBag.Title = Strings.Debts;
+}
+
+<h2>@Strings.Debts</h2>
+
+<p>
+    @Html.ActionLink(@Strings.CreateNew, "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Strings.Name
+        </th>
+        <th>
+            @Strings.Type
+        </th>
+        <th>
+            @Strings.Amount
+        </th>
+        <th>
+            @Strings.Repayed
+        </th>
+        <th>
+            @Strings.Rest
+        </th>
+        <th>
+            @Strings.Account
+        </th>
+        <th>
+            @Strings.Comment
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(items => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.AgentName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.TypeName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.Amount)
+                @(" " + item.CurrencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.RepayedAmount)
+                @(" " + item.CurrencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.RestAmount)
+                @(" " + item.CurrencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.AccountName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.Comment)
+            </td>
+            <td>
+                <a href="/Debt/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
+                <a href="/Debt/Details/@item.Id"><img src="/Images/details.png"/></a> |
+                <a href="/Debt/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+            </td>
+        </tr>
+    }
+
+</table>

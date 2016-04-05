@@ -146,6 +146,8 @@
     <Compile Include="Controllers\ExchangeController.cs" />
     <Compile Include="Common\DoubleModelBinder.cs" />
     <Compile Include="Common\DefaultsHelper.cs" />
+    <Compile Include="Controllers\DebtController.cs" />
+    <Compile Include="Models\DebtViewData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -232,6 +234,11 @@
     <Content Include="Views\Exchange\Edit.cshtml" />
     <Content Include="Views\Exchange\Index.cshtml" />
     <Content Include="Scripts\jquery.fix.validate.js" />
+    <Content Include="Views\Debt\Create.cshtml" />
+    <Content Include="Views\Debt\Delete.cshtml" />
+    <Content Include="Views\Debt\Details.cshtml" />
+    <Content Include="Views\Debt\Edit.cshtml" />
+    <Content Include="Views\Debt\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -243,6 +250,7 @@
     <Folder Include="Views\Category\" />
     <Folder Include="Views\Subcategory\" />
     <Folder Include="Views\Exchange\" />
+    <Folder Include="Views\Debt\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
