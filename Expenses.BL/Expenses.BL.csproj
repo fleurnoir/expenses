@@ -53,8 +53,8 @@
     <Compile Include="Entities\KeyValuePair.cs" />
     <Compile Include="Service\SubcategoriesService.cs" />
     <Compile Include="Service\DebtsService.cs" />
-    <Compile Include="Service\ISimpleOperation.cs" />
     <Compile Include="Service\RepaymentsService.cs" />
+    <Compile Include="Service\AmountWrapper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

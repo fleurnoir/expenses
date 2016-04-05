@@ -17,20 +17,20 @@ namespace Expenses.BL.Service
             m_userId = userId;
         }
 
-        public override TOperation Add(TOperation operation)
-        {
+        protected override void BeforeAdd (ExpensesContext context, TOperation operation) {
             operation.UserId = m_userId;
             operation.OperationTime = DateTime.Now;
             operation.CheckFields ();
-            using (var db = CreateContext ())
-            using (var transaction = db.BeginTransaction(IsolationLevel.Serializable))    
-            {
-                CommitOperation (db, operation);
-                operation = db.Set<TOperation>().Add (operation);
-                db.SaveChanges ();
+            CommitOperation (context, operation);
+        }
+
+        protected override TOperation AddCore(ExpensesContext context, TOperation operation)
+        {
+            using (var transaction = context.BeginTransaction (IsolationLevel.Serializable)) {
+                var result = base.AddCore (context, operation);
                 transaction.Commit ();
+                return result;
             }
-            return operation;
         }
 
         private void RollbackOperation(ExpensesContext db, TOperation operation)
@@ -45,23 +45,27 @@ namespace Expenses.BL.Service
 
         protected abstract void CommitOperation (ExpensesContext db, TOperation operation, bool rollback);
 
-        public override TOperation Update(TOperation operation)
+        protected override void BeforeUpdate (ExpensesContext db, TOperation operation)
         {
             operation.UserId = m_userId;
-            //operation.OperationTime = DateTime.Now;
             operation.CheckFields ();
-            using (var db = CreateContext ())
+            var dbOperation = db.Set<TOperation>().Find (operation.Id);
+
+            //Operation time must stay unchanged
+            operation.OperationTime = dbOperation.OperationTime;
+            RollbackOperation (db, dbOperation);
+            CommitOperation (db, operation);
+            Cloner.Clone (operation, dbOperation);
+        }
+
+        protected override TOperation UpdateCore(ExpensesContext db, TOperation operation)
+        {
             using (var transaction = db.BeginTransaction(IsolationLevel.Serializable))    
             {
-                var dbOperation = db.Set<TOperation>().Find (operation.Id);
-                //Operation time must stay unchanged
-                operation.OperationTime = dbOperation.OperationTime;
-                RollbackOperation (db, dbOperation);
-                CommitOperation (db, operation);
-                Cloner.Clone (operation, dbOperation);
+                BeforeUpdate (db, operation);
                 db.SaveChanges ();
-                transaction.Commit ();
-                return dbOperation;
+                transaction.Commit();
+                return operation;
             }
         }
 

@@ -6,6 +6,7 @@ namespace Expenses.BL.Entities
     {
         public string AgentName { get; set; }
         public double Amount { get; set; }
+		public double RepayedAmount { get; set; }
         public long AccountId { get; set; }
         public DebtType Type { get; set; }
         public bool Repayed { get; set; }

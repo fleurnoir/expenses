@@ -18,30 +18,44 @@ namespace Expenses.BL.Service
             m_provider = contextProvider;
         }
 
+        protected virtual void BeforeAdd(ExpensesContext db, TEntity item) {
+            item.CheckFields ();
+        }
+
+        protected virtual TEntity AddCore (ExpensesContext context, TEntity item)
+        {
+            BeforeAdd (context, item);
+            item = context.Set<TEntity> ().Add (item);
+            context.SaveChanges ();
+            return item;
+        }
+
         public virtual TEntity Add(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException (nameof(item));
+            using (var context = CreateContext ())
+                return AddCore (context, item);
+        }
+
+        protected virtual void BeforeUpdate(ExpensesContext db, TEntity item){
             item.CheckFields ();
-            using (var context = CreateContext ()) 
-            {
-                item = context.Set<TEntity> ().Add (item);
-                context.SaveChanges ();
-                return item;
-            }
+        }
+
+        protected virtual TEntity UpdateCore (ExpensesContext context, TEntity item)
+        {
+            BeforeUpdate (context, item);
+            context.Entry (item).State = EntityState.Modified;
+            context.SaveChanges ();
+            return item;
         }
 
         public virtual TEntity Update(TEntity item)
         {
             if (item == null)
                 throw new ArgumentNullException (nameof(item));
-            item.CheckFields ();
-            using (var context = CreateContext ()) 
-            {
-                context.Entry (item).State = EntityState.Modified;
-                context.SaveChanges ();
-                return item;
-            }
+            using (var context = CreateContext ())
+                return UpdateCore (context, item);
         }
 
         public virtual void Delete(long itemId)

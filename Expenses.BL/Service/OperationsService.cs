@@ -15,38 +15,26 @@ namespace Expenses.BL.Service
         {
         }
 
-        private class OperationInternal : SimpleOperation<Operation>
+        internal static void CommitAndRound(IAmount operation, IAmount destination, OperationType type,  bool rollback)
         {
-            public OperationInternal(Operation operation) : base(operation){
-            }
-
-            public override Account GetAccount(ExpensesContext db) {
-                return db.Accounts.Find (m_operation.AccountId);
-            }
-
-            public override OperationType GetOperationType(ExpensesContext db) {
-                return (from ei in db.Subcategories
-                    join ec in db.Categories on ei.CategoryId equals ec.Id
-                    where ei.Id == m_operation.SubcategoryId
-                    select ec.Type).First ();
-            }
-        }
-
-        internal static void CommitSimpleOperation(ExpensesContext db, ISimpleOperation operation, bool rollback)
-        {
-            var account = operation.GetAccount(db);
-            var type = operation.GetOperationType(db);
-            var accountAmount = Math.Round (account.Amount, 2);
+            var accountAmount = Math.Round (destination.Amount, 2);
             var operationAmount = Math.Round (operation.Amount, 2);
             var sign1 = type == OperationType.Income ? 1.0 : -1.0;
             var sign2 = rollback ? -1.0 : 1.0;
             operation.Amount = operationAmount;
-            account.Amount = accountAmount + sign1 * sign2 * operationAmount;
+            destination.Amount = Math.Round(accountAmount + sign1 * sign2 * operationAmount, 2);
         }
 
         protected override void CommitOperation(ExpensesContext db, Operation operation, bool rollback)
         {
-            CommitSimpleOperation (db, new OperationInternal (operation), rollback);
+            CommitAndRound (
+                operation, 
+                db.Accounts.Find (operation.AccountId), 
+                (from ei in db.Subcategories
+                             join ec in db.Categories on ei.CategoryId equals ec.Id
+                             where ei.Id == operation.SubcategoryId
+                             select ec.Type).First (), 
+                rollback);
         }
 
         public IList<Operation> Select (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)

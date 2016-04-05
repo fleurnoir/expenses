@@ -9,23 +9,25 @@ namespace Expenses.BL.Service
     {
         public DebtsService(IDataContextProvider provider, long userId) : base(provider, userId){}
 
-        private class DebtOperation : SimpleOperation<Debt>
-        {
-            public DebtOperation(Debt operation) : base(operation) {
-            }
-
-            public override Account GetAccount(ExpensesContext db) {
-                return db.Accounts.Find (m_operation.AccountId);
-            }
-
-            public override OperationType GetOperationType(ExpensesContext db) {
-                return m_operation.Type == DebtType.Borrow ? OperationType.Income : OperationType.Expense;
-            }
-        }
-
         protected override void CommitOperation (ExpensesContext db, Debt operation, bool rollback)
         {
-            OperationsService.CommitSimpleOperation(db, new DebtOperation(operation), rollback);
+            var wrapper = new AmountWrapper (()=>operation.Amount-operation.RepayedAmount, amount => operation.Amount = amount + operation.RepayedAmount);
+            OperationsService.CommitAndRound (wrapper, db.Accounts.Find (operation.AccountId), operation.Type == DebtType.Borrow ? OperationType.Income : OperationType.Expense, rollback);
+        }
+
+        protected override void BeforeAdd (ExpensesContext db, Debt operation)
+        {
+            if (operation.RepayedAmount != 0.0)
+                throw new InvalidOperationException ($"{nameof(Debt.RepayedAmount)} must be zero for new Debt record");
+            base.BeforeAdd (db, operation);
+        }
+
+        protected override void BeforeUpdate (ExpensesContext db, Debt operation)
+        {
+            var existing = db.Debts.Find (operation.Id);
+            if (Math.Abs (operation.RepayedAmount - existing.RepayedAmount) > 0.00001)
+                throw new InvalidOperationException ("{nameof(Debt.RepayedAmount)} cannot be edited");
+            base.BeforeUpdate (db, operation);
         }
 
         public IList<Debt> GetDebts(DebtType? type) {

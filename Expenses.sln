@@ -32,4 +32,20 @@ Global
 		{CBBB0C69-AB34-4286-973B-600A89318A23}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBBB0C69-AB34-4286-973B-600A89318A23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.FileWidth = 120
+		$1.inheritsSet = VisualStudio
+		$1.inheritsScope = text/plain
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.AfterDelegateDeclarationParameterComma = True
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.inheritsSet = null
+		$3.scope = text/x-cshtml
+	EndGlobalSection
 EndGlobal
