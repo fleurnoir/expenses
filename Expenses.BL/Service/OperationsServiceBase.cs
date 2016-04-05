@@ -26,7 +26,7 @@ namespace Expenses.BL.Service
 
         protected override TOperation AddCore(ExpensesContext context, TOperation operation)
         {
-            using (var transaction = context.BeginTransaction (IsolationLevel.Serializable)) {
+            using (var transaction = context.BeginTransaction (IsolationLevel.RepeatableRead)) {
                 var result = base.AddCore (context, operation);
                 transaction.Commit ();
                 return result;
@@ -60,7 +60,7 @@ namespace Expenses.BL.Service
 
         protected override TOperation UpdateCore(ExpensesContext db, TOperation operation)
         {
-            using (var transaction = db.BeginTransaction(IsolationLevel.Serializable))    
+            using (var transaction = db.BeginTransaction(IsolationLevel.RepeatableRead))    
             {
                 BeforeUpdate (db, operation);
                 db.SaveChanges ();
@@ -72,7 +72,7 @@ namespace Expenses.BL.Service
         public override void Delete (long itemId)
         {
             using (var db = CreateContext ())
-            using (var transaction = db.BeginTransaction(IsolationLevel.Serializable))    
+            using (var transaction = db.BeginTransaction(IsolationLevel.RepeatableRead))    
             {
                 var operation = db.Set<TOperation>().Find (itemId);
                 RollbackOperation (db, operation);
