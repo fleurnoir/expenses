@@ -27,13 +27,13 @@ namespace Expenses.BL.Service
         void DeleteSubcategory(long expenseId);
         Subcategory GetSubcategory(long expenseId);
         IList<Subcategory> GetSubcategories(long? categoryId = null);
-        CategoryType GetCategoryType (long subcategoryId);
+        OperationType GetCategoryType (long subcategoryId);
 
         Category AddCategory(Category category);
         Category UpdateCategory(Category category);
         void DeleteCategory(long categoryId);
         Category GetCategory(long categoryId);
-        IList<Category> GetCategories (CategoryType? categoryType = null);
+        IList<Category> GetCategories (OperationType? type = null);
 
         Currency AddCurrency(Currency currency);
         Currency UpdateCurrency(Currency currency);
@@ -46,6 +46,18 @@ namespace Expenses.BL.Service
         void DeleteAccount(long accountId);
         Account GetAccount(long accountId);
         IList<Account> GetAccounts ();
+
+        Debt AddDebt(Debt debt);
+        Debt UpdateDebt(Debt debt);
+        void DeleteDebt(long debtId);
+        Debt GetDebt(long debtId);
+        IList<Debt> GetDebts (DebtType? type = null);
+
+        Repayment AddRepayment(Repayment repayment);
+        Repayment UpdateRepayment(Repayment repayment);
+        void DeleteRepayment(long repaymentId);
+        Repayment GetRepayment(long repaymentId);
+        IList<Repayment> GetRepayments (long debtId);
 
         string GetValue (string key);
         void StoreValue (string key, string value);

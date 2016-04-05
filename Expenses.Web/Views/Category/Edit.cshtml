@@ -39,6 +39,7 @@
                 @((ViewBag.Type as SelectList)?.Items
                       .OfType<KeyValuePair<CategoryType,String>> ()
                       .FirstOrDefault (item => item.Key == Model.Type).Value)
+                @Html.HiddenFor( model=>model.Type )
             </div>
         </div>
 

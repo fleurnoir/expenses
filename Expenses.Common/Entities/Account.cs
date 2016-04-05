@@ -2,7 +2,7 @@
 
 namespace Expenses.BL.Entities
 {
-    public class Account : Entity
+    public class Account : Entity, IAmount
     {
         public string Name { get; set; }
 

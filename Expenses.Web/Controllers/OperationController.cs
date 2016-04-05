@@ -33,10 +33,10 @@ namespace Expenses.Web.Controllers
                 Service.GetOperations (dateFrom.ToDateTime (format), dateTo.ToDateTime (format), subcategoryId, categoryId)
                 .Select (item => new OperationViewData (item))).ToList ();
             var stats = GetStatistics (dateFrom.ToDateTime (format), dateTo.ToDateTime (format), subcategoryId, categoryId);
-            var income = stats.Where (s => s.Type == CategoryType.Income).ToList();
+            var income = stats.Where (s => s.Type == OperationType.Income).ToList();
             if (income.Count > 0)
                 ViewBag.Income = income;
-            var expense = stats.Where (s => s.Type == CategoryType.Expense).ToList();
+            var expense = stats.Where (s => s.Type == OperationType.Expense).ToList();
             if (expense.Count > 0)
                 ViewBag.Expense = expense;
             
@@ -166,7 +166,7 @@ namespace Expenses.Web.Controllers
         {
             var result = Service.AddCategory (new Category {
                 Name = categoryName,
-                Type = CategoryType.Expense
+                Type = OperationType.Expense
             });
             return Json (new { id = result.Id, name = result.Name });
         }

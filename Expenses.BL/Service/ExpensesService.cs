@@ -24,6 +24,8 @@ namespace Expenses.BL.Service
             RegisterFactory<Category> ((provider,userId)=>new CategoriesService(provider));
             RegisterFactory<Operation> ((provider,userId)=>new OperationsService(provider, userId));
             RegisterFactory<Exchange> ((provider,userId)=>new ExchangesService(provider, userId));
+            RegisterFactory<Debt> ((provider, userId) => new DebtsService (provider, userId));
+            RegisterFactory<Repayment> ((provider, userId) => new RepaymentsService (provider, userId));
         }
 
         private IDataContextProvider m_provider;
@@ -79,7 +81,7 @@ namespace Expenses.BL.Service
         public Subcategory UpdateSubcategory (Subcategory expense) => Update(expense);
         public void DeleteSubcategory (long expenseId) => Delete<Subcategory>(expenseId);
         public Subcategory GetSubcategory (long expenseId) => Select<Subcategory>(expenseId);
-        public CategoryType GetCategoryType (long subcategoryId) {
+        public OperationType GetCategoryType (long subcategoryId) {
             return ((SubcategoriesService)GetEntityService<Subcategory> ()).GetCategoryType (subcategoryId);
         }
 
@@ -97,6 +99,22 @@ namespace Expenses.BL.Service
         public Account UpdateAccount(Account account) => Update(account);
         public void DeleteAccount(long accountId) => Delete<Account>(accountId);
         public Account GetAccount(long accountId) => Select<Account>(accountId);
+
+        public Debt AddDebt(Debt debt) => Add(debt);
+        public Debt UpdateDebt(Debt debt) => Update(debt);
+        public void DeleteDebt(long debtId) => Delete<Debt>(debtId);
+        public Debt GetDebt(long debtId) => Select<Debt>(debtId);
+        public IList<Debt> GetDebts (DebtType? type = null) {
+            return ((DebtsService)GetEntityService<Debt> ()).GetDebts (type);
+        }
+
+        public Repayment AddRepayment(Repayment repayment) => Add(repayment);
+        public Repayment UpdateRepayment(Repayment repayment) => Update(repayment);
+        public void DeleteRepayment(long repaymentId) => Delete<Repayment>(repaymentId);
+        public Repayment GetRepayment(long repaymentId) => Select<Repayment>(repaymentId);
+        public IList<Repayment> GetRepayments (long debtId) {
+            return ((RepaymentsService)GetEntityService<Repayment> ()).GetRepayments (debtId);
+        }
 
         public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
         {
@@ -118,7 +136,7 @@ namespace Expenses.BL.Service
             }
         }
 
-        public IList<Category> GetCategories (CategoryType? categoryType = null)
+        public IList<Category> GetCategories (OperationType? categoryType = null)
         {
             return ((CategoriesService)GetEntityService<Category> ()).Select (categoryType);
         }

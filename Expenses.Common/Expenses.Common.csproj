@@ -48,13 +48,17 @@
     <Compile Include="Utils\IServiceProvider.cs" />
     <Compile Include="Service\ExpensesServiceHelper.cs" />
     <Compile Include="Entities\Category.cs" />
-    <Compile Include="Entities\CategoryType.cs" />
     <Compile Include="Entities\Subcategory.cs" />
     <Compile Include="Utils\Parser.cs" />
     <Compile Include="Service\StatsItem.cs" />
     <Compile Include="Entities\Exchange.cs" />
     <Compile Include="Entities\OperationBase.cs" />
     <Compile Include="Service\IEntityStorage.cs" />
+    <Compile Include="Entities\Debt.cs" />
+    <Compile Include="Entities\DebtType.cs" />
+    <Compile Include="Entities\Repayment.cs" />
+    <Compile Include="Entities\OperationType.cs" />
+    <Compile Include="Entities\IAmount.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

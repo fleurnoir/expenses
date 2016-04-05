@@ -32,12 +32,12 @@ namespace Expenses.BL.Service
             }
         }
 
-        public IList<Category> Select (CategoryType? categoryType)
+        public IList<Category> Select (OperationType? categoryType)
         {
             using (var context = CreateContext ()) {
                 IQueryable<Category> query = context.Categories;
                 if (categoryType != null)
-                    query = query.Where (c => c.Type == (CategoryType)categoryType);
+                    query = query.Where (c => c.Type == (OperationType)categoryType);
                 return query.OrderBy(c=>c.Name).ToList ();
             }
         }

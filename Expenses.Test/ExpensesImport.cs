@@ -86,7 +86,7 @@ namespace Expenses.Test
                 return result;
             result = db.Categories.FirstOrDefault (item=>item.Name == name);
             if (result == null) {
-                result = db.Categories.Add (new Category{Name = name, Type = CategoryType.Expense});
+                result = db.Categories.Add (new Category{Name = name, Type = OperationType.Expense});
                 db.SaveChanges ();
             }
             categories.Add (name, result);

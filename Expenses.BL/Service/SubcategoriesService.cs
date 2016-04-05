@@ -27,7 +27,7 @@ namespace Expenses.BL.Service
             }
         }
 
-        private static CategoryType GetCategoryType (ExpensesContext db, long subcategoryId)
+        private static OperationType GetCategoryType (ExpensesContext db, long subcategoryId)
         {
             return (from sub in db.Subcategories
             join cat in db.Categories on sub.CategoryId equals cat.Id
@@ -35,7 +35,7 @@ namespace Expenses.BL.Service
             select cat.Type).First ();
         }
 
-        public CategoryType GetCategoryType(long subcategoryId) {
+        public OperationType GetCategoryType(long subcategoryId) {
             using (var db = CreateContext ())
                 return GetCategoryType (db, subcategoryId);
         }

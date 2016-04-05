@@ -2,7 +2,7 @@
 
 namespace Expenses.BL.Entities
 {
-    public enum CategoryType
+    public enum OperationType
     {
         Expense = 1,
         Income = 2

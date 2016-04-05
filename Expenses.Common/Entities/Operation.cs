@@ -2,7 +2,7 @@
 
 namespace Expenses.BL.Entities
 {
-    public class Operation : OperationBase
+    public class Operation : OperationBase, IAmount
     {
         public long AccountId { get; set; }
 

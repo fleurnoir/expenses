@@ -7,13 +7,13 @@ namespace Expenses.BL.Entities
     {
         public string Name { get; set; }
 
-        public CategoryType Type { get; set; }
+        public OperationType Type { get; set; }
 
         public override void CheckFields ()
         {
             if (String.IsNullOrEmpty (Name))
                 throw new ArgumentException ($"The field {nameof(Name)} cannot be empty");
-            if (!Enum.GetValues(typeof(CategoryType)).Cast<CategoryType>().Any(type=>Type==type))
+            if (!Enum.GetValues(typeof(OperationType)).Cast<OperationType>().Any(type=>Type==type))
                 throw new ArgumentException ("Unknown category type");
         }
     }

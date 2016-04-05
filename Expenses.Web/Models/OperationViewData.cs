@@ -19,7 +19,7 @@ namespace Expenses.Web.Models
 
         public string CategoryName { get; set; }
 
-        public CategoryType Type { get; set; }
+        public OperationType Type { get; set; }
 
         public string AccountName { get; set; }
 

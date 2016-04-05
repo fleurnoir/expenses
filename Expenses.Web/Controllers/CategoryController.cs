@@ -10,10 +10,10 @@ namespace Expenses.Web.Controllers
 {
     public class CategoryController : ExpensesController<Category, CategoryViewData>
     {
-        private static IDictionary<CategoryType, string> m_categoryNames = new Dictionary<CategoryType, string>
+        private static IDictionary<OperationType, string> m_categoryNames = new Dictionary<OperationType, string>
         {
-            {CategoryType.Expense, Strings.Expense},
-            {CategoryType.Income, Strings.Income}
+            {OperationType.Expense, Strings.Expense},
+            {OperationType.Income, Strings.Income}
         };
 
         protected override IEnumerable<CategoryViewData> FillUpViewItems (IEnumerable<CategoryViewData> items)
@@ -33,7 +33,7 @@ namespace Expenses.Web.Controllers
 
         protected override void PopulateSelectLists (CategoryViewData category)
         {
-            ViewBag.Type = new SelectList (m_categoryNames, nameof(KeyValuePair<int,int>.Key), nameof(KeyValuePair<int,int>.Value), category?.Type ?? CategoryType.Expense);
+            ViewBag.Type = new SelectList (m_categoryNames, nameof(KeyValuePair<int,int>.Key), nameof(KeyValuePair<int,int>.Value), category?.Type ?? OperationType.Expense);
         }
     }
 }
