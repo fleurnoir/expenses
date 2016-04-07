@@ -66,6 +66,42 @@ namespace Expenses.Web.Controllers
             item.Repayments = Service.GetRepayments (item.Id);
             return View(item);
         }
+
+        public JsonResult DeleteRepayment(long id, long debtId) {
+            try
+            {
+                Service.DeleteRepayment(id);
+                return Json (new { ok = true, error = String.Empty });
+            }
+            catch(Exception exception) {
+                return Json (new { ok = false, error = exception.Message });
+            }
+        }
+
+        public JsonResult AddRepayment(long debtId, double amount, string comment) {
+            try
+            {
+                Service.AddRepayment(new Repayment {DebtId=debtId, Amount=amount, Comment=comment});
+                return Json (new { ok = true, error = String.Empty });
+            }
+            catch(Exception exception) {
+                return Json (new { ok = false, error = exception.Message });
+            }
+        }
+
+        public JsonResult EditRepayment(long id, long debtId, double amount, string comment) {
+            try 
+            {
+                var repayment = Service.GetRepayment(id);
+                repayment.Amount = amount;
+                repayment.Comment = comment;
+                Service.UpdateRepayment(repayment);
+                return Json (new { ok = true, error = String.Empty });
+            }
+            catch (Exception exception) {
+                return Json (new { ok = false, error = exception.Message });
+            }
+        }
     }
 }
 

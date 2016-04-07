@@ -363,5 +363,11 @@ namespace Expenses.Web {
                 return ResourceManager.GetString("Repayment", resourceCulture);
             }
         }
+        
+        public static string Error {
+            get {
+                return ResourceManager.GetString("Error", resourceCulture);
+            }
+        }
     }
 }

@@ -65,4 +65,5 @@
     <data name="OwedToMe"><value>Owed to me</value></data>
     <data name="Rest"><value>Rest</value></data>
     <data name="Repayment"><value>Repayment</value></data>
+    <data name="Error"><value>Error</value></data>
 </root>

@@ -65,4 +65,5 @@
     <data name="OwedToMe"><value>Мне должны</value></data>
     <data name="Rest"><value>Остаток</value></data>
     <data name="Repayment"><value>Погашение</value></data>
+    <data name="Error"><value>Ошибка</value></data>
 </root>
