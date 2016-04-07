@@ -19,18 +19,18 @@ namespace Expenses.Web
 
         protected virtual IEntityService<TView> EntityService { get { return new EntityViewService<TEntity,TView> (Service.GetEntityService<TEntity> ()); } }
 
-        public ActionResult Details(long? id)
+        public virtual ActionResult Details(long? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            var currency = FillUpViewItem(EntityService.Select((long)id));
-            if (currency == null)
+            var item = FillUpViewItem(EntityService.Select((long)id));
+            if (item == null)
             {
                 return HttpNotFound();
             }
-            return View(currency);
+            return View(item);
         }
 
         protected abstract IEnumerable<TView> FillUpViewItems(IEnumerable<TView> items);

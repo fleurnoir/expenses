@@ -64,4 +64,5 @@
     <data name="IOwe"><value>Я должен</value></data>
     <data name="OwedToMe"><value>Мне должны</value></data>
     <data name="Rest"><value>Остаток</value></data>
+    <data name="Repayment"><value>Погашение</value></data>
 </root>

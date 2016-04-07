@@ -4,6 +4,86 @@
     ViewBag.Title = Strings.Details;
 }
 
+<div id="edit-dialog" style="display:none;">
+    <label class="control-label">@Strings.Amount</label>
+    <input type="text" class="form-control" id="edit-amount"/>
+    <span>@Model.CurrencyName</span>
+</div>
+
+<div id="delete-dialog" style="display:none;" title="@Strings.Delete">
+    <p>@Strings.RecordDeleteConfirmation</p>
+    <label class="control-label">@Strings.Amount</label>
+    <span id="delete-amount"/><span>@Model.CurrencyName</span>
+</div>
+
+@section Scripts{
+<script type="text/javascript">
+        $(function () {
+
+            $( "#edit-dialog" ).dialog({
+                autoOpen: false,
+                modal: true,  
+                buttons: {
+                    OK: function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Operation/AddCategory",
+                            data: "{ categoryName: '" + $("#add-category-name").val() + "' }",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data, status) {     
+                                var $el = $("#CategoryId");
+                                $el.append($("<option></option>")
+                                    .attr("value", data.id).text(data.name));
+                                $el.val(data.id);
+                                $("#SubcategoryId").empty();                    
+                                $("#add-category-dialog").dialog("close");
+                            },
+                            error: errorFun
+                        });
+
+                    },
+                    "@Strings.Cancel": function() {$(this).dialog("close");}
+                }            
+            });
+
+            $( "#add-sub-dialog" ).dialog({
+                autoOpen: false,
+                modal: true,  
+                buttons: {
+                    OK: function() {
+                        $.ajax({
+                            type: "POST",
+                            url: "/Operation/AddSubcategory",
+                            data: "{ subcategoryName: '" + $("#add-sub-name").val() + "', categoryId: " + $("#CategoryId").val() + " }",
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function(data, status) {     
+                                var $el = $("#SubcategoryId");
+                                $el.append($("<option></option>")
+                                    .attr("value", data.id).text(data.name));
+                                $el.val(data.id);
+                                $("#add-sub-dialog").dialog("close");
+                            },
+                            error: errorFun
+                        });
+                    },
+                    "@Strings.Cancel": function() {$(this).dialog("close");}
+                }            
+            });
+
+            $( "#add-category" ).click(function() {
+               $( "#add-category-dialog" ).dialog( "open" );
+            });
+
+            $( "#add-sub" ).click(function() {
+               $( "#add-sub-dialog" ).dialog( "open" );
+            });
+
+            $("#CategoryId").focus();
+        });
+</script>
+}
 <h2>@Strings.Details</h2>
 
 <div>
@@ -79,7 +159,52 @@
 
     </dl>
 </div>
+
 <p>
     @Html.ActionLink(Strings.Edit, "Edit", new { id = Model.Id }) |
     @Html.ActionLink(Strings.BackToList, "Index")
 </p>
+
+<h2>@Strings.Repayment</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Id)
+        </th>
+        <th>
+            @Strings.Amount
+        </th>
+        <th>
+            @Strings.Date
+        </th>
+        <th>
+            @Strings.Comment
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model.Repayments)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(items => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.Amount)
+                @(" " + Model.CurrencyName)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.OperationTime)
+            </td>
+            <td>
+                @Html.DisplayFor(items => item.Comment)
+            </td>
+            <td>
+                <a href="#" id="edit-link"><img src="/Images/edit.png"/></a> |
+                <a href="#" id="delete-link"><img src="/Images/delete.png"/></a>
+            </td>
+        </tr>
+    }
+
+</table>

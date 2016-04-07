@@ -7,6 +7,7 @@ using Expenses.BL.Entities;
 using Expenses.Web.Models;
 using Expenses.Common.Service;
 using Expenses.Common.Utils;
+using System.Net;
 
 namespace Expenses.Web.Controllers
 {
@@ -49,6 +50,21 @@ namespace Expenses.Web.Controllers
             if (accountId != null && accountId > 0) {
                 ViewBag.CurrencyName = Service.GetCurrency (accounts.First(a=>a.Id == accountId).CurrencyId).ShortName;
             }
+        }
+
+        public override ActionResult Details (long? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var item = FillUpViewItem(EntityService.Select((long)id));
+            if (item == null)
+            {
+                return HttpNotFound();
+            }
+            item.Repayments = Service.GetRepayments (item.Id);
+            return View(item);
         }
     }
 }

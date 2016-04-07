@@ -1,6 +1,7 @@
 ﻿using System;
 using Expenses.BL.Entities;
 using Expenses.Common.Utils;
+using System.Collections.Generic;
 
 namespace Expenses.Web.Models
 {
@@ -20,7 +21,9 @@ namespace Expenses.Web.Models
 
         public string TypeName { get; set; }
 
-        public double RestAmount { get; set; } 
+        public double RestAmount { get; set; }
+
+        public IList<Repayment> Repayments { get; set; }
     }
 }
 
