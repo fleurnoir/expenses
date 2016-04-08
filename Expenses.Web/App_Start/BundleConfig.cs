@@ -27,6 +27,10 @@ namespace Expenses.Web
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                 "~/Scripts/jquery-ui.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/operation.edit").Include(
+                "~/Scripts/operation.edit.js"));
+
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css"));
@@ -38,7 +42,7 @@ namespace Expenses.Web
             bundles.Add (new StyleBundle ("~/Content/pagedlist").Include (
                 "~/Content/PagedList.css"
             ));
-                
+
 
             // Set EnableOptimizations to false for debugging. For more information,
             // visit http://go.microsoft.com/fwlink/?LinkId=301862
