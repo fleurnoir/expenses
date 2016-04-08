@@ -27,16 +27,16 @@ namespace Expenses.Web
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                 "~/Scripts/jquery-ui.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/operation.edit").Include(
+            bundles.Add(new ScriptBundle("~/bundles/operation-edit").Include(
                 "~/Views/Operation/edit.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/operation.index").Include(
+            bundles.Add(new ScriptBundle("~/bundles/operation-index").Include(
                 "~/Views/Operation/index.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/exchange.edit").Include(
+            bundles.Add(new ScriptBundle("~/bundles/exchange-edit").Include(
                 "~/Views/Exchange/edit.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/debt.details").Include(
+            bundles.Add(new ScriptBundle("~/bundles/debt-details").Include(
                 "~/Views/Debt/details.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
