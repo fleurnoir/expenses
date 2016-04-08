@@ -239,7 +239,10 @@
     <Content Include="Views\Debt\Details.cshtml" />
     <Content Include="Views\Debt\Edit.cshtml" />
     <Content Include="Views\Debt\Index.cshtml" />
-    <Content Include="Scripts\operation.edit.js" />
+    <Content Include="Views\Operation\edit.js" />
+    <Content Include="Views\Exchange\edit.js" />
+    <Content Include="Views\Debt\details.js" />
+    <Content Include="Views\Operation\index.js" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

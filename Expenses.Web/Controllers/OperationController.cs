@@ -129,6 +129,8 @@ namespace Expenses.Web.Controllers
 
             var accounts = Service.GetAccounts ();
             var categories = Service.GetCategories ();
+            if (entity.SubcategoryId > 0)
+                entity.CategoryId = Service.GetSubcategory (entity.SubcategoryId)?.CategoryId ?? 0;
 
             long categoryId = ChooseDefaultValue(entity.CategoryId, ()=>Service.GetDefaultId<Category>(), categories);
 
