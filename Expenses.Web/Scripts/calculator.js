@@ -410,6 +410,8 @@ function createCalc(calcMod) {
 
         val = parseFloat(display.value);
 
+        if(key == ',') key = '.';
+
         switch (key) {
         case '0':
         case '1':
