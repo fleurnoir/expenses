@@ -17,7 +17,6 @@ namespace Expenses.Web.Controllers
     {
         public ActionResult Index(string dateFrom, string dateTo, long? categoryId, long? subcategoryId, int? page)
         {
-            var format = "yyyy-MM-dd";
             ViewBag.CategoryId = new SelectList (
                 new[] {new Category{Id = 0, Name=Strings.All}}.Concat(Service.GetCategories()), 
                 nameof (Category.Id), nameof (Category.Name), 
@@ -30,9 +29,9 @@ namespace Expenses.Web.Controllers
                 GetFilterSubcategoriesCore(categoryId),
                 nameof (Subcategory.Id), nameof (Subcategory.Name), subcategoryId ?? 0);
             var items = FillUpViewItems (
-                Service.GetOperations (dateFrom.ToDateTime (format), dateTo.ToDateTime (format), subcategoryId, categoryId)
+                Service.GetOperations (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId)
                 .Select (item => new OperationViewData (item))).ToList ();
-            var stats = GetStatistics (dateFrom.ToDateTime (format), dateTo.ToDateTime (format), subcategoryId, categoryId);
+            var stats = GetStatistics (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId);
             var income = stats.Where (s => s.Type == OperationType.Income).ToList();
             if (income.Count > 0)
                 ViewBag.Income = income;
@@ -41,6 +40,16 @@ namespace Expenses.Web.Controllers
                 ViewBag.Expense = expense;
             
             return View(items.ToPagedList(page ?? 1, 20));
+        }
+
+        private static string DateFormat = "yyyy-MM-dd";
+
+        private static DateTime? ToStartDate(string dateTime) {
+            return dateTime?.ToDateTime (DateFormat)?.Date;
+        }
+
+        private static DateTime? ToEndDate(string dateTime) {
+            return dateTime?.ToDateTime (DateFormat)?.Date.AddDays(1);
         }
 
         private void SaveDefaults(OperationViewData item) {

@@ -17,6 +17,16 @@ namespace Expenses.BL.Service
             m_userId = userId;
         }
 
+        protected static void CommitAndRound(IAmount operation, IAmount destination, OperationType type,  bool rollback)
+        {
+            var accountAmount = Math.Round (destination.Amount, 2);
+            var operationAmount = Math.Round (operation.Amount, 2);
+            var sign1 = type == OperationType.Income ? 1.0 : -1.0;
+            var sign2 = rollback ? -1.0 : 1.0;
+            operation.Amount = operationAmount;
+            destination.Amount = Math.Round(accountAmount + sign1 * sign2 * operationAmount, 2);
+        }
+
         protected override void BeforeAdd (ExpensesContext context, TOperation operation) {
             operation.UserId = m_userId;
             operation.OperationTime = DateTime.Now;

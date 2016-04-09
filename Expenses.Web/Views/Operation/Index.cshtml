@@ -106,9 +106,7 @@
                 @item.OperationTime.ToString("d")
             </td>
             <td>
-                <a href="/Operation/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Operation/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Operation/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Operation", item.Id)
             </td>
         </tr>
     }

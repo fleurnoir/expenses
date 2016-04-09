@@ -23,9 +23,9 @@ namespace Expenses.BL.Service
                 join a in db.Accounts on d.AccountId equals a.Id
                 where d.Id == operation.DebtId
                 select new {debt = d, account = a}).First ();
-            OperationsService.CommitAndRound (operation, da.account, da.debt.Type == DebtType.Lend ? OperationType.Income : OperationType.Expense, rollback);
+            CommitAndRound (operation, da.account, da.debt.Type == DebtType.Lend ? OperationType.Income : OperationType.Expense, rollback);
             var debtWrapper = new AmountWrapper (() => da.debt.RepayedAmount, amount=>da.debt.RepayedAmount = amount);
-            OperationsService.CommitAndRound (operation, debtWrapper, OperationType.Income, rollback);
+            CommitAndRound (operation, debtWrapper, OperationType.Income, rollback);
         }
 
         public IList<Repayment> GetRepayments(long debtId) {

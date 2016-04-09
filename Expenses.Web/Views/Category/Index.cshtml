@@ -43,9 +43,7 @@
                 @Html.DisplayFor(items => item.Comment)
             </td>
             <td>
-                <a href="/Category/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Category/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Category/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Category", item.Id)
             </td>
         </tr>
     }

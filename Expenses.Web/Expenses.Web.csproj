@@ -243,6 +243,7 @@
     <Content Include="Views\Exchange\edit.js" />
     <Content Include="Views\Debt\details.js" />
     <Content Include="Views\Operation\index.js" />
+    <Content Include="App_Code\HtmlHelpers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -255,6 +256,7 @@
     <Folder Include="Views\Subcategory\" />
     <Folder Include="Views\Exchange\" />
     <Folder Include="Views\Debt\" />
+    <Folder Include="App_Code\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

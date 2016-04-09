@@ -70,9 +70,7 @@
                 @Html.DisplayFor(items => item.Comment)
             </td>
             <td>
-                <a href="/Debt/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Debt/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Debt/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Debt", item.Id)
             </td>
         </tr>
     }

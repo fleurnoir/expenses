@@ -49,9 +49,7 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                <a href="/Account/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Account/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Account/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Account", item.Id)
             </td>
         </tr>
     }

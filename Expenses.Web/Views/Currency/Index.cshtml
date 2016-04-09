@@ -43,9 +43,7 @@
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td>
-                <a href="/Currency/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Currency/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Currency/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Currency", item.Id)
             </td>
         </tr>
     }

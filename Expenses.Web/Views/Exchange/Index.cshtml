@@ -54,9 +54,7 @@
                 @(" " + item.DestCurrencyName)
             </td>
             <td>
-                <a href="/Exchange/Edit/@item.Id"><img src="/Images/edit.png"/></a> |
-                <a href="/Exchange/Details/@item.Id"><img src="/Images/details.png"/></a> |
-                <a href="/Exchange/Delete/@item.Id"><img src="/Images/delete.png"/></a>
+                @HtmlHelpers.ItemOptions("Exchange", item.Id)
             </td>
         </tr>
     }

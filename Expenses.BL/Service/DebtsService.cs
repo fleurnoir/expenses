@@ -12,7 +12,7 @@ namespace Expenses.BL.Service
         protected override void CommitOperation (ExpensesContext db, Debt operation, bool rollback)
         {
             var wrapper = new AmountWrapper (()=>operation.Amount-operation.RepayedAmount, amount => operation.Amount = amount + operation.RepayedAmount);
-            OperationsService.CommitAndRound (wrapper, db.Accounts.Find (operation.AccountId), operation.Type == DebtType.Borrow ? OperationType.Income : OperationType.Expense, rollback);
+            CommitAndRound (wrapper, db.Accounts.Find (operation.AccountId), operation.Type == DebtType.Borrow ? OperationType.Income : OperationType.Expense, rollback);
         }
 
         protected override void BeforeAdd (ExpensesContext db, Debt operation)

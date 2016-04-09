@@ -17,11 +17,10 @@ namespace Expenses.BL.Service
             var dest = db.Accounts.Find (exchange.DestAccountId);
             if (source.CurrencyId == dest.CurrencyId && Math.Abs (exchange.SourceAmount - exchange.DestAmount) > 0.0001)
                 throw new InvalidOperationException ("Exchange operation between accounts with the same currency must have equal amounts");
-            exchange.SourceAmount = Math.Round (exchange.SourceAmount, 2);
-            exchange.DestAmount = Math.Round (exchange.DestAmount, 2);
-            double sign = rollback ? -1.0 : 1.0;
-            source.Amount = Math.Round (source.Amount - sign*exchange.SourceAmount);
-            dest.Amount = Math.Round (dest.Amount + sign*exchange.DestAmount);
+            CommitAndRound(new AmountWrapper(()=>exchange.SourceAmount, amount=>exchange.SourceAmount = amount), 
+                source, OperationType.Expense, rollback);
+            CommitAndRound(new AmountWrapper(()=>exchange.DestAmount, amount=>exchange.DestAmount = amount), 
+                dest, OperationType.Income, rollback);
         }
     }
 }
