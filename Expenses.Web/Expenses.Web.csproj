@@ -244,6 +244,8 @@
     <Content Include="Views\Debt\details.js" />
     <Content Include="Views\Operation\index.js" />
     <Content Include="App_Code\HtmlHelpers.cshtml" />
+    <Content Include="Scripts\calculator.js" />
+    <Content Include="Content\calculator.css" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

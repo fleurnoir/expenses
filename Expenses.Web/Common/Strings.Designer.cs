@@ -369,5 +369,11 @@ namespace Expenses.Web {
                 return ResourceManager.GetString("Error", resourceCulture);
             }
         }
+        
+        public static string Calculator {
+            get {
+                return ResourceManager.GetString("Calculator", resourceCulture);
+            }
+        }
     }
 }

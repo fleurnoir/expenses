@@ -4,10 +4,6 @@
     ViewBag.Title = Strings.Details;
 }
 
-@section Styles {
-    @Styles.Render("~/Content/jquery-ui")
-}
-
 <div id="edit-dialog" style="display:none;">
     <input id="edit-id" type="hidden"/>
     <div>
@@ -36,7 +32,6 @@
 </div>
 
 @section Scripts{
-    @Scripts.Render("~/bundles/jquery-ui")
     @Scripts.Render("~/bundles/debt-details")
 
     <script type="text/javascript">

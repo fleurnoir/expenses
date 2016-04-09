@@ -84,13 +84,8 @@
     @Html.ActionLink(Strings.BackToList, "Index")
 </div>
 
-@section Styles {
-    @Styles.Render("~/Content/jquery-ui")
-}
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-    @Scripts.Render("~/bundles/jquery-ui")
     @Scripts.Render("~/bundles/operation-edit")
 
 <script type="text/javascript">$(function(){ initOperationEdit("@Strings.Cancel"); });</script>

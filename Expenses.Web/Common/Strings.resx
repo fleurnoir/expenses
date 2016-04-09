@@ -66,4 +66,6 @@
     <data name="Rest"><value>Rest</value></data>
     <data name="Repayment"><value>Repayment</value></data>
     <data name="Error"><value>Error</value></data>
+    <data name="Calculator"><value>Calculator</value></data>
+
 </root>

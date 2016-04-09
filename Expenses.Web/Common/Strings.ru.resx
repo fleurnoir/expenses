@@ -66,4 +66,5 @@
     <data name="Rest"><value>Остаток</value></data>
     <data name="Repayment"><value>Погашение</value></data>
     <data name="Error"><value>Ошибка</value></data>
+    <data name="Calculator"><value>Калькулятор</value></data>
 </root>

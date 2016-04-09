@@ -1,6 +1,7 @@
 ﻿@using PagedList
 @using PagedList.Mvc
 @using Expenses.Web.Models
+@using Expenses.BL.Entities
 @model IPagedList<OperationViewData>
 
 @{
@@ -9,7 +10,6 @@
 
 @section Styles {
     @Styles.Render("~/Content/pagedlist")
-    @Styles.Render("~/Content/jquery-ui")
 <style type="text/css">
     .ui-datepicker {
         z-index: 1000 !important;
@@ -25,7 +25,6 @@
 }
 
 @section Scripts {
-    @Scripts.Render("~/bundles/jquery-ui")
     @Scripts.Render("~/bundles/operation-index")
 <script type="text/javascript">
     $(function(){ initOperationIndex("@Strings.JsDateFormat", "@dateFrom", "@dateTo", "@Strings.ShowFilter", "@Strings.HideFilter"); });
@@ -83,12 +82,15 @@
         <th>
             @Strings.Date
         </th>
+        <th>
+            @Strings.Comment
+        </th>
         <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
-        <tr>
+        <tr @Html.Raw(item.Type == OperationType.Income ? "style='color:green;'" : String.Empty) >
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
             </td>
@@ -106,6 +108,9 @@
                 @item.OperationTime.ToString("d")
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td >
                 @HtmlHelpers.ItemOptions("Operation", item.Id)
             </td>
         </tr>

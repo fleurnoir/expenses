@@ -1,5 +1,7 @@
 ﻿@helper ItemOptions(string controller, long itemId) {
-    <a href="/@controller/Edit/@itemId"><img src="/Images/edit.png"/></a>
-    <a href="/@controller/Details/@itemId"><img src="/Images/details.png"/></a> 
-    <a href="/@controller/Delete/@itemId"><img src="/Images/delete.png"/></a>
+    <span style="white-space:nowrap;">
+        <a href="/@controller/Edit/@itemId"><img src="/Images/edit.png"/></a>
+        <a href="/@controller/Details/@itemId"><img src="/Images/details.png"/></a> 
+        <a href="/@controller/Delete/@itemId"><img src="/Images/delete.png"/></a>
+    </span>
 }

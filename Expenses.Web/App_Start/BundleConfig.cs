@@ -27,6 +27,9 @@ namespace Expenses.Web
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                 "~/Scripts/jquery-ui.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/calculator").Include(
+                "~/Scripts/calculator.js"));
+            
             bundles.Add(new ScriptBundle("~/bundles/operation-edit").Include(
                 "~/Views/Operation/edit.js"));
 
@@ -42,6 +45,9 @@ namespace Expenses.Web
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/Site.css"));
+
+            bundles.Add(new StyleBundle("~/Content/calculator").Include(
+                "~/Content/calculator.css"));
 
             bundles.Add (new StyleBundle ("~/Content/jquery-ui").Include (
                 "~/Content/jquery-ui.css"

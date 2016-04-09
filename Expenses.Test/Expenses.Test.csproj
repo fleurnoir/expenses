@@ -54,6 +54,7 @@
     <None Include="test.sqlite" />
     <None Include="App.config" />
     <None Include="clean.sqlite" />
+    <None Include="test.html" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Expenses.BL\Expenses.BL.csproj">

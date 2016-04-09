@@ -7,10 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - ExpenseDB</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/calculator")
+    @Styles.Render("~/Content/jquery-ui")
     @RenderSection("styles", required: false)
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/calculator")
+    @Scripts.Render("~/bundles/jquery-ui")
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -21,6 +25,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a href="#" id="show-calc" title="@Strings.Calculator"><img src="/Images/calc-white.png" style="position: relative; top: 10px"/></a>
                 @Html.ActionLink("ExpenseDB", "Index", "Operation", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
@@ -47,7 +52,23 @@
             <p>&copy; @DateTime.Now.Year - andy</p>
         </footer>
     </div>
-
+    <div id="calc-container" title="@Strings.Calculator" style="display:none;">
+        <div id="calc-body"></div>
+    </div>
     @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+    $(function(){
+        var calc = JSCALC.init($("#calc-body").get(0));
+
+        var $container = $("#calc-container");
+
+        $container.dialog({ autoOpen: false, modal: true, height: 275, width: 263 });
+
+        $("#show-calc").click(function(){
+            calc.press("C"); 
+            $container.dialog("open");
+        });
+    });
+    </script>
 </body>
 </html>
