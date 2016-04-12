@@ -54,6 +54,9 @@
                 @(" " + item.DestCurrencyName)
             </td>
             <td>
+                @Html.DisplayFor(items => item.Comment)
+            </td>
+            <td>
                 @HtmlHelpers.ItemOptions("Exchange", item.Id)
             </td>
         </tr>
