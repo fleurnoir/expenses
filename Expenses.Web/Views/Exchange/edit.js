@@ -39,7 +39,8 @@
     for(var id in idPairs)
         $(id).change(onAccountChange);
 
-    updateEditors();
+    if(currencies["#SourceAccountId"] == currencies["#DestAccountId"])
+    	updateEditors();
 
     $("#SourceAccountId").focus();
 };
