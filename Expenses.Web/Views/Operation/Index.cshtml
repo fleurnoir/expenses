@@ -22,6 +22,7 @@
     string dateTo = Request.Params["dateTo"];
     string categoryId = Request.Params["categoryId"];
     string subcategoryId = Request.Params["subcategoryId"];
+    string accountId = Request.Params["accountId"];
 }
 
 @section Scripts {
@@ -60,10 +61,16 @@
             @Html.DropDownList("SubcategoryId", null, new { @class = "form-control" })
         </div>
     </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label" for="AccountId">@Strings.Account</label> 
+        <div class="col-md-10">
+            @Html.DropDownList("AccountId", null, new { @class = "form-control" })
+        </div>
+    </div>
     <a href="#" class="btn btn-default" id="apply-filter">@Strings.Apply</a>
 </div>
 
-@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId } ))
+@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId, accountId } ))
 
 <table class="table">
     <tr>
@@ -81,6 +88,9 @@
         </th>
         <th>
             @Strings.Date
+        </th>
+        <th>
+            @Strings.Account
         </th>
         <th>
             @Strings.Comment
@@ -108,6 +118,9 @@
                 @item.OperationTime.ToString("d")
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.AccountName)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.Comment)
             </td>
             <td >
@@ -118,7 +131,7 @@
 
 </table>
 
-@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId } ))
+@Html.PagedListPager(Model, page=>Url.Action("Index", new { page, dateFrom, dateTo, categoryId, subcategoryId, accountId } ))
 @if(ViewBag.Income != null)
 {
 <p>

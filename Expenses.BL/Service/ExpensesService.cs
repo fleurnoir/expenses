@@ -116,14 +116,14 @@ namespace Expenses.BL.Service
             return ((RepaymentsService)GetEntityService<Repayment> ()).GetRepayments (debtId);
         }
 
-        public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
+        public IList<Operation> GetOperations (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
-            return ((OperationsService)GetEntityService<Operation>()).Select(startTime, endTime, subcategoryId, categoryId);        
+            return ((OperationsService)GetEntityService<Operation>()).Select(startTime, endTime, subcategoryId, categoryId, accountId);        
         }
 
-        public IList<StatsItem> GetStatistics (DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), long? subcategoryId = default(long?), long? categoryId = default(long?))
+        public IList<StatsItem> GetStatistics (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
-            return ((OperationsService)GetEntityService<Operation>()).GetStatistics(startTime, endTime, subcategoryId, categoryId);
+            return ((OperationsService)GetEntityService<Operation>()).GetStatistics(startTime, endTime, subcategoryId, categoryId, accountId);
         }
 
         public IList<Subcategory> GetSubcategories (long? categoryId = null)

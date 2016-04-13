@@ -15,7 +15,7 @@ namespace Expenses.Web.Controllers
 {
     public class OperationController : ExpensesControllerBase<Operation, OperationViewData>
     {
-        public ActionResult Index(string dateFrom, string dateTo, long? categoryId, long? subcategoryId, int? page)
+        public ActionResult Index(string dateFrom, string dateTo, long? categoryId, long? subcategoryId, long? accountId, int? page)
         {
             ViewBag.CategoryId = new SelectList (
                 new[] {new Category{Id = 0, Name=Strings.All}}.Concat(Service.GetCategories()), 
@@ -28,10 +28,15 @@ namespace Expenses.Web.Controllers
             ViewBag.SubcategoryId = new SelectList (
                 GetFilterSubcategoriesCore(categoryId),
                 nameof (Subcategory.Id), nameof (Subcategory.Name), subcategoryId ?? 0);
+            if (accountId == 0)
+                accountId = null;
+            ViewBag.AccountId = new SelectList (
+                new[] {new Account{Id = 0, Name=Strings.All}}.Concat(Service.GetAccounts()),
+                nameof (Account.Id), nameof (Account.Name), accountId ?? 0);
             var items = FillUpViewItems (
-                Service.GetOperations (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId)
+                Service.GetOperations (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId, accountId)
                 .Select (item => new OperationViewData (item))).ToList ();
-            var stats = GetStatistics (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId);
+            var stats = GetStatistics (ToStartDate(dateFrom), ToEndDate(dateTo), subcategoryId, categoryId, accountId);
             var income = stats.Where (s => s.Type == OperationType.Income).ToList();
             if (income.Count > 0)
                 ViewBag.Income = income;
@@ -68,10 +73,10 @@ namespace Expenses.Web.Controllers
             SaveDefaults (item);
         }
 
-        private IList<StatsItemViewData> GetStatistics(DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
+        private IList<StatsItemViewData> GetStatistics(DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
             var currencies = Service.GetCurrencies ().ToDictionary(c=>c.Id);
-            return Service.GetStatistics (startTime, endTime, subcategoryId, categoryId)
+            return Service.GetStatistics (startTime, endTime, subcategoryId, categoryId, accountId)
                 .Select (item => new StatsItemViewData (item)
                     { CurrencyName = currencies [item.CurrencyId].ShortName }).ToList();
         }

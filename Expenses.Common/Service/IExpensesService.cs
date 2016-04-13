@@ -13,8 +13,8 @@ namespace Expenses.BL.Service
         Operation UpdateOperation(Operation operation);
         void DeleteOperation(long operationId);
         Operation GetOperation(long operationId);
-        IList<Operation> GetOperations (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
-        IList<StatsItem> GetStatistics (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null);
+        IList<Operation> GetOperations (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null, long? accountId = null);
+        IList<StatsItem> GetStatistics (DateTime? startTime = null, DateTime? endTime = null, long? subcategoryId = null, long? categoryId = null, long? accountId = null);
 
         Exchange AddExchange(Exchange operation);
         Exchange UpdateExchange(Exchange operation);

@@ -27,13 +27,13 @@ namespace Expenses.BL.Service
                 rollback);
         }
 
-        public IList<Operation> Select (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
+        public IList<Operation> Select (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
             using (var db = CreateContext ())
-                return GetQuery (db, startTime, endTime, subcategoryId, categoryId).OrderByDescending (item => item.Id).ToList ();        
+                return GetQuery (db, startTime, endTime, subcategoryId, categoryId, accountId).OrderByDescending (item => item.Id).ToList ();        
         }
 
-        private static IQueryable<Operation> GetQuery (ExpensesContext db, DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId)
+        private static IQueryable<Operation> GetQuery (ExpensesContext db, DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
             IQueryable<Operation> query = db.Operations;
             if (categoryId != null) {
@@ -42,16 +42,19 @@ namespace Expenses.BL.Service
                         where sub.CategoryId == categoryId
                     select op;
             }
+
             if (subcategoryId != null)
                 query = query.Where (op => op.SubcategoryId == subcategoryId);
             if (startTime != null)
                 query = query.Where (op => op.OperationTime >= startTime);
             if (endTime != null)
                 query = query.Where (op => op.OperationTime <= endTime);
+            if (accountId != null)
+                query = query.Where (op => op.AccountId == accountId);
             return query;
         }
 
-        public IList<StatsItem> GetStatistics (DateTime? startTime = default(DateTime?), DateTime? endTime = default(DateTime?), long? subcategoryId = default(long?), long? categoryId = default(long?))
+        public IList<StatsItem> GetStatistics (DateTime? startTime, DateTime? endTime, long? subcategoryId, long? categoryId, long? accountId)
         {
             using (var db = CreateContext ())
             {
@@ -70,6 +73,8 @@ namespace Expenses.BL.Service
                     query = query.Where (i => i.op.OperationTime >= startTime);
                 if (endTime != null)
                     query = query.Where (i => i.op.OperationTime <= endTime);
+                if (accountId != null)
+                    query = query.Where (i => i.op.AccountId == accountId);
 
                 return query.GroupBy (i => new {i.acc.CurrencyId, i.cat.Type})
                     .Select (g => new StatsItem {

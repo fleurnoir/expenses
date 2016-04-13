@@ -19,7 +19,8 @@
         $a.attr("href","/Operation/Index?dateFrom=" + getDate("#date-from") + 
                         "&dateTo=" + getDate("#date-to") +
                         "&categoryId=" + $("#CategoryId").val() +
-                        "&subcategoryId=" + $("#SubcategoryId").val());
+                        "&subcategoryId=" + $("#SubcategoryId").val() +
+                        "&accountId=" + $("#AccountId").val() );
     });
 
     $("#show-filter").click(function(e){
