@@ -2,28 +2,24 @@
 using Expenses.BL.Service;
 using Expenses.BL.Entities;
 using System.Linq;
+using System.Data.Common;
 
 namespace Expenses.Web
 {
     public class AuthenticationContextProvider : IAuthenticationContextProvider
     {
-        private string m_usersDbConnectionString;
-
         private IDatabaseManager m_databaseManager;
 
-        public AuthenticationContextProvider (string usersDbConnectionString, IDatabaseManager databaseManager)
+        public AuthenticationContextProvider (IDatabaseManager databaseManager)
         {
             if (databaseManager == null)
                 throw new ArgumentNullException (nameof(databaseManager));
-            if (usersDbConnectionString == null)
-                throw new ArgumentNullException (nameof(usersDbConnectionString));
             m_databaseManager = databaseManager;
-            m_usersDbConnectionString = usersDbConnectionString;
         }
 
         public AuthenticationContext CreateContext ()
         {
-            return new AuthenticationContext(m_usersDbConnectionString);
+            return new AuthenticationContext(m_databaseManager.CreateUsersDbConnection());
         }
 
         public IDataContextProvider GetProviderForUser (long userId)
@@ -32,7 +28,7 @@ namespace Expenses.Web
                 var user = context.Users.First (u => u.Id == userId);
                 if (!m_databaseManager.DatabaseExists (user))
                     m_databaseManager.CreateDatabase (user);
-                return DataContextProvider.FromConnectionString (m_databaseManager.GetConnectionString(user));
+                return DataContextProvider.FromConnectionProvider (m_databaseManager.GetConnectionProvider(user));
             }
         }
 

@@ -22,9 +22,8 @@ namespace Expenses.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-
-            var dbManager = new SqliteDatabaseManager ("Databases");
-            var contextProvider = new AuthenticationContextProvider("data source=users.sqlite;foreign keys=true", dbManager);
+            var dbManager = new SqliteDatabaseManager ("Databases", "data source=users.sqlite;foreign keys=true");
+            var contextProvider = new AuthenticationContextProvider(dbManager);
 
             var authenticationService = new AuthenticationService (contextProvider);
             var authentication = new BasicAuthentication (authenticationService);

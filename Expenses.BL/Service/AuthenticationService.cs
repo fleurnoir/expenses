@@ -38,12 +38,12 @@ namespace Expenses.BL.Service
         {
             if (user == null)
                 throw new ArgumentNullException (nameof(user));
-            user.CheckFields ();
             using (var context = m_contextProvider.CreateContext ()) 
             {
                 if (context.Users.Any(u => u.Login == user.Login))
                     throw new SecurityException ($"User {user.Login} already exists");
                 user.PasswordHash = ComputeHash (password);
+                user.CheckFields ();
                 context.Users.Add (user);
                 context.SaveChanges ();
                 return user;

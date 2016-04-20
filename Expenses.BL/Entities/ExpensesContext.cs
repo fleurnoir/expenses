@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data.Entity;
+using System.Data.Common;
 
 namespace Expenses.BL.Entities
 {
@@ -8,6 +9,8 @@ namespace Expenses.BL.Entities
         public ExpensesContext() : base(){}
 
         public ExpensesContext(string nameOrConnectionString) : base(nameOrConnectionString) {}
+
+        public ExpensesContext (DbConnection connection) : base (connection, true){}
 
         public DbSet<Subcategory> Subcategories { get; set; }
         public DbSet<Category> Categories { get; set; }

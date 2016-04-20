@@ -2,12 +2,16 @@
 using Expenses.BL.Entities;
 using System.IO;
 using System.Data.SQLite;
+using System.Data.Common;
+using Expenses.BL.Service;
 
 namespace Expenses.Web
 {
     public class SqliteDatabaseManager : IDatabaseManager
     {
         private string m_folder;
+
+        private string m_usersDbConnectionString;
 
         private const string CreateTablesQuery = @"
         
@@ -113,10 +117,13 @@ CREATE TABLE `Repayments` (
 
 ";
 
-        public SqliteDatabaseManager(string folder) {
-            if (folder == null)
-                throw new ArgumentNullException (nameof(folder));
-            m_folder = folder;
+        public SqliteDatabaseManager(string userDatabasesFolder, string usersDbConnectionString) {
+            if (usersDbConnectionString == null)
+                throw new ArgumentNullException (nameof(usersDbConnectionString));
+            if (userDatabasesFolder == null)
+                throw new ArgumentNullException (nameof(userDatabasesFolder));
+            m_folder = userDatabasesFolder;
+            m_usersDbConnectionString = usersDbConnectionString;
         }
 
         private string GetDbPath(User dbUser) 
@@ -136,6 +143,7 @@ CREATE TABLE `Repayments` (
             using (var connection = new SQLiteConnection (GetConnectionString(dbPath))) 
             using (var command = connection.CreateCommand()) {
                 command.CommandText = CreateTablesQuery;
+                connection.Open ();
                 command.ExecuteNonQuery ();
             }
         }
@@ -147,9 +155,27 @@ CREATE TABLE `Repayments` (
             return String.Format (ConnectionStringTemplate, dbPath);
         }
 
-        public string GetConnectionString (User dbUser)
+        public DbConnection CreateUsersDbConnection ()
         {
-            return GetConnectionString(GetDbPath(dbUser));
+            return new SQLiteConnection(m_usersDbConnectionString);
+        }
+
+        private class SqliteConnectionProvider : IConnectionProvider
+        {
+            private string m_connectionString;
+
+            public SqliteConnectionProvider(string connectionString){
+                m_connectionString = connectionString;
+            }
+
+            public DbConnection CreateConnection() {
+                return new SQLiteConnection (m_connectionString);
+            }
+        }
+
+        public IConnectionProvider GetConnectionProvider (User dbUser)
+        {
+            return new SqliteConnectionProvider(GetConnectionString(GetDbPath(dbUser)));
         }
     }
 }
