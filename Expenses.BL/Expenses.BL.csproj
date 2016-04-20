@@ -55,6 +55,8 @@
     <Compile Include="Service\DebtsService.cs" />
     <Compile Include="Service\RepaymentsService.cs" />
     <Compile Include="Service\AmountWrapper.cs" />
+    <Compile Include="Service\IAuthenticationContextProvider.cs" />
+    <Compile Include="Entities\AuthenticationContext.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

@@ -9,9 +9,9 @@ namespace Expenses.BL.Service
 {
     public class AuthenticationService : IAuthenticationService
     {
-        IDataContextProvider m_contextProvider;
+        IAuthenticationContextProvider m_contextProvider;
 
-        public AuthenticationService (IDataContextProvider contextProvider)
+        public AuthenticationService (IAuthenticationContextProvider contextProvider)
         {
             if (contextProvider == null)
                 throw new ArgumentNullException ("contextProvider");
@@ -30,7 +30,7 @@ namespace Expenses.BL.Service
                 var user = context.Users.FirstOrDefault(u => u.Login.ToLower() == login.ToLower());
                 if (user == null || ComputeHash (password) != user.PasswordHash)
                     return null;
-                return new ExpensesService(m_contextProvider, user.Id);
+                return new ExpensesService(m_contextProvider.GetProviderForUser(user.Id), user.Id);
             }
         }
 

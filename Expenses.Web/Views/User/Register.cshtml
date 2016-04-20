@@ -1,16 +1,17 @@
-﻿@model Expenses.Web.Models.LoginData
+﻿@model Expenses.Web.Models.RegistrationData
 
 @{
-    ViewBag.Title = Strings.Login;
+    ViewBag.Title = Strings.Registration;
 }
 
-<h2>@Strings.Login</h2>
+<h2>@Strings.Registration</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
         <div class="form-group">
             <label class="control-label col-md-2" for="Login">@Strings.Name</label>
@@ -28,9 +29,15 @@
         </div>
 
         <div class="form-group">
+            <label class="control-label col-md-2" for="Password">@Strings.Confirmation</label>
+            <div class="col-md-10">
+                @Html.PasswordFor(model => model.ConfirmPassword, new { @class = "form-control" } )
+            </div>
+        </div>
+
+        <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="@Strings.Login" class="btn btn-default" />
-                @Html.ActionLink(Strings.Registration, "Register", null, new { @class="btn btn-default" })
+                <input type="submit" value="@Strings.Registration" class="btn btn-default" />
             </div>
         </div>
     </div>

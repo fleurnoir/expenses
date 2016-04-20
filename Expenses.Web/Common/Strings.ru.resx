@@ -67,4 +67,6 @@
     <data name="Repayment"><value>Погашение</value></data>
     <data name="Error"><value>Ошибка</value></data>
     <data name="Calculator"><value>Калькулятор</value></data>
+    <data name="Registration"><value>Регистрация</value></data>
+    <data name="Confirmation"><value>Подтверждение</value></data>
 </root>

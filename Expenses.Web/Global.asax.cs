@@ -22,8 +22,13 @@ namespace Expenses.Web
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
-            var contextProvider = DataContextProvider.FromConnectionStringName("expenses");
-            var authentication = new BasicAuthentication (new AuthenticationService (contextProvider));
+
+            var dbManager = new SqliteDatabaseManager ("Databases");
+            var contextProvider = new AuthenticationContextProvider("data source=users.sqlite;foreign keys=true", dbManager);
+
+            var authenticationService = new AuthenticationService (contextProvider);
+            var authentication = new BasicAuthentication (authenticationService);
+            Services.Register<IAuthenticationService> (authenticationService);
             Services.Register<IMvcActionFilter> (authentication);
             Services.Register<IAuthentication> (authentication);
             Services.RegisterProvider<IExpensesService>(authentication);

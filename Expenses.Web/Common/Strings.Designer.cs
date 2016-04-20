@@ -375,5 +375,17 @@ namespace Expenses.Web {
                 return ResourceManager.GetString("Calculator", resourceCulture);
             }
         }
+        
+        public static string Registration {
+            get {
+                return ResourceManager.GetString("Registration", resourceCulture);
+            }
+        }
+        
+        public static string Confirmation {
+            get {
+                return ResourceManager.GetString("Confirmation", resourceCulture);
+            }
+        }
     }
 }

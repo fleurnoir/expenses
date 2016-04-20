@@ -9,6 +9,8 @@ using Expenses.Web.Common;
 using Expenses.Common.Utils;
 using Expenses.Web.Models;
 using System.Net;
+using Expenses.BL.Service;
+using Expenses.BL.Entities;
 
 namespace Expenses.Web.Controllers
 {
@@ -29,6 +31,29 @@ namespace Expenses.Web.Controllers
             } else {
                 FormsAuthentication.RedirectFromLoginPage (loginData.Login, false);
                 return null;
+            }
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Register(RegistrationData registration)
+        {
+            try {
+                if (registration == null || registration.Password != registration.ConfirmPassword)
+                    throw new ArgumentException ("Passwords do not match");
+                Services.Get<IAuthenticationService> ().RegisterUser (new User { Login = registration.Login }, registration.Password);
+                return new RedirectResult ("~");
+            }
+            catch(Exception exception) {
+                ModelState.AddModelError (String.Empty, exception.Message);
+                registration.Password = String.Empty;
+                registration.ConfirmPassword = String.Empty;
+                return View (registration);
             }
         }
 

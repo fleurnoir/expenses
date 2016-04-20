@@ -148,6 +148,10 @@
     <Compile Include="Common\DefaultsHelper.cs" />
     <Compile Include="Controllers\DebtController.cs" />
     <Compile Include="Models\DebtViewData.cs" />
+    <Compile Include="Common\AuthenticationContextProvider.cs" />
+    <Compile Include="Common\IDatabaseManager.cs" />
+    <Compile Include="Common\SqliteDatabaseManager.cs" />
+    <Compile Include="Models\RegistrationData.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -246,6 +250,7 @@
     <Content Include="App_Code\HtmlHelpers.cshtml" />
     <Content Include="Scripts\calculator.js" />
     <Content Include="Content\calculator.css" />
+    <Content Include="Views\User\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

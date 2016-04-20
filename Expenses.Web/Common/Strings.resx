@@ -67,5 +67,7 @@
     <data name="Repayment"><value>Repayment</value></data>
     <data name="Error"><value>Error</value></data>
     <data name="Calculator"><value>Calculator</value></data>
+    <data name="Registration"><value>Registration</value></data>
+    <data name="Confirmation"><value>Confirmation</value></data>
 
 </root>
