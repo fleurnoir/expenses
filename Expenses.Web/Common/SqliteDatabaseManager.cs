@@ -16,13 +16,14 @@ namespace Expenses.Web
         private const string CreateTablesQuery = @"
         
 CREATE TABLE `Users` (
-    `Id`    INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    `Id`    INTEGER NOT NULL,
     `Login` TEXT NOT NULL UNIQUE,
     `PasswordHash`  TEXT NOT NULL,
     `FirstName` TEXT,
     `LastName`  TEXT,
     `Email` TEXT,
-    `Comment`   TEXT
+    `Comment`   TEXT,
+    PRIMARY KEY(Id)
 );
 
 CREATE TABLE `Categories` (
@@ -140,11 +141,17 @@ CREATE TABLE `Repayments` (
         {
             var dbPath = GetDbPath (dbUser);
             SQLiteConnection.CreateFile (dbPath);
-            using (var connection = new SQLiteConnection (GetConnectionString(dbPath))) 
-            using (var command = connection.CreateCommand()) {
-                command.CommandText = CreateTablesQuery;
-                connection.Open ();
-                command.ExecuteNonQuery ();
+            using (var connection = new SQLiteConnection (GetConnectionString (dbPath))) {
+                using (var command = connection.CreateCommand ()) {
+                    command.CommandText = CreateTablesQuery;
+                    connection.Open ();
+                    command.ExecuteNonQuery ();
+                }
+                using (var command = connection.CreateCommand ()) {
+                    // using direct query because EF auto generates primary key value
+                    command.CommandText = $"insert into Users (Id, Login, PasswordHash) values ({dbUser.Id}, \"{dbUser.Login}\", \"{dbUser.PasswordHash}\")";
+                    command.ExecuteNonQuery ();
+                }
             }
         }
 

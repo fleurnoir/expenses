@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace Expenses.BL.Entities
 {
@@ -17,7 +18,11 @@ namespace Expenses.BL.Entities
         public override void CheckFields ()
         {
             if (String.IsNullOrEmpty (Login))
-                throw new ArgumentException ($"The field {nameof(Login)} cannot be empty");
+                throw new ArgumentException ("User name cannot be empty");
+
+            if (Regex.Match(Login, "[a-zA-Z0-9_]+")?.Value != Login)
+                throw new ArgumentException ("User name must contain only latin characters, numbers and underscore character");
+            
             if (String.IsNullOrEmpty (PasswordHash))
                 throw new ArgumentException ($"The field {nameof(PasswordHash)} cannot be empty");
         }
